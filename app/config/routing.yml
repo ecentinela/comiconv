@@ -1,3 +1,6 @@
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
 EcentinelaComiconvBundle:
     resource: "@EcentinelaComiconvBundle/Controller/"
     type:     annotation

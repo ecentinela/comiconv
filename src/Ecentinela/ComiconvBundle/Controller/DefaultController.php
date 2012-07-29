@@ -44,4 +44,22 @@ class DefaultController extends Controller
     {
         return array();
     }
+
+    /**
+     * @Route("/{_locale}/about", name="about", requirements={ "_locale" = "en|es" })
+     * @Template()
+     */
+    public function aboutAction()
+    {
+        return array();
+    }
+
+    /**
+     * @Route("/{_locale}/contact", name="contact", requirements={ "_locale" = "en|es" })
+     * @Template()
+     */
+    public function contactAction()
+    {
+        return array();
+    }
 }

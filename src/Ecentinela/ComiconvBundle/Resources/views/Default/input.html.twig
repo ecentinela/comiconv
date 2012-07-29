@@ -1,1 +1,84 @@
-Hello
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Comic-Conversor</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Comic conversor between jpg, cbz, pdf, etc. files">
+        <meta name="author" content="Javier Martinez Fernandez">
+
+        {% stylesheets output="all.css"
+            "@EcentinelaComiconvBundle/Resources/public/css/input.less"
+        %}
+        <link href="{{ asset_url }}" rel="stylesheet" media="screen" />
+        {% endstylesheets %}
+
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <link rel="shortcut icon" href="../assets/ico/favicon.ico">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+    </head>
+
+    <body>
+
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="{{ path("input") }}">Comic Conversor</a>
+
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li><a href="{{ path("about") }}">About</a></li>
+
+                            <li><a href="{{ path("contact") }}">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <noscript id="requirement-error">
+            <h3>You should enable javascript to work with this site.</h3>
+        </noscript>
+
+        <div id="requirement-error" class="hide">
+            <h3>Your browser doesn't support file uploads.</h3>
+        </div>
+
+        <div class="container hide">
+
+            <h1>Comic conversor online</h1>
+
+            <p><strong>Drop the files</strong> or click <strong>to add files</strong> to convert them to another format.</p>
+
+            <div id="drop-area">
+
+                <div></div>
+
+                <a href="#" id="upload-link">Drag files here or click to add files</a>
+
+            </div>
+
+        </div>
+
+        {% javascripts output="all.js"
+            "bundles/fosjsrouting/js/router.js"
+            "@EcentinelaComiconvBundle/Resources/public/jquery.js"
+            "@EcentinelaComiconvBundle/Resources/public/canjs/can.jquery.js"
+            "@EcentinelaComiconvBundle/Resources/public/bootstrap/*.js"
+            "@EcentinelaComiconvBundle/Resources/public/plupload/js/plupload.full.js"
+            "@EcentinelaComiconvBundle/Resources/public/js/input.coffee"
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+        <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+
+    </body>
+</html>
