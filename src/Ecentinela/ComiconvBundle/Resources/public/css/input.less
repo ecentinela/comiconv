@@ -66,28 +66,45 @@ body {
 }
 
 body {
+    overflow-x: hidden;
     #gradient .vertical(#efefef, #ccc);
 }
 
 #drop-area {
     display: block;
     margin: 40px auto auto;
-    width: 300px;
 
-    div {
-        border: 3px dashed #999;
-        margin: auto;
-        .square(80px);
-        .border-radius(5px);
+    #drop {
+        text-align: center;
+
+        img {
+            border: 3px dashed #999;
+            margin: auto;
+            padding: 20px;
+            .square(40px);
+            .border-radius(5px);
+        }
+
+        a {
+            color: #999;
+            display: block;
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 32px;
+            text-align: center;
+            margin: 20px auto auto;
+        }
     }
 
-    a {
-        color: #999;
-        display: block;
-        font-size: 24px;
-        font-weight: bold;
-        line-height: 32px;
-        text-align: center;
-        margin: 20px auto auto;
+    #table {
+        width: 500px;
+
+        .icon-move {
+            cursor: move;
+        }
+
+        .icon-trash {
+            cursor: pointer;
+        }
     }
 }

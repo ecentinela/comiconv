@@ -25,7 +25,7 @@
         <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
     </head>
 
-    <body>
+    <body id="body">
 
         <div class="navbar">
             <div class="navbar-inner">
@@ -51,27 +51,69 @@
             <h3>Your browser doesn't support file uploads.</h3>
         </div>
 
-        <div class="container hide">
+        <div class="container well hide">
 
             <h1>Comic conversor online</h1>
 
             <p><strong>Drop the files</strong> or click <strong>to add files</strong> to convert them to another format.</p>
 
-            <div id="drop-area">
+            <div id="drop-area" class="row">
 
-                <div></div>
+                <div id="drop" class="span4">
+                    <img src="{{ asset("bundles/ecentinelacomiconv/images/drop.png") }}" alt="drop" />
 
-                <a href="#" id="upload-link">Drag files here or click to add files</a>
+                    <a href="#" id="upload-link">Drag files here or click to add files</a>
+                </div>
+
+                <div id="table" class="span5 offset1 fade">
+                    <table class="table table-striped table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Filename</th>
+                                <th>Size</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <i class="icon-move" rel="tooltip" title="Drag to change position"></i>
+                                </td>
+                                <td>
+                                    <i class="icon-trash" rel="tooltip" title="Click to remove this file"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">
+                                    <button class="btn btn-primary pull-right">Upload!</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
 
             </div>
 
+            <hr />
+
+            <span class="label label-info">
+                <i class="icon-info-sign icon-white"></i>
+                You can drag multiple cbz or pdf files to join them in a single file.
+            </span>
         </div>
 
         {% javascripts output="all.js"
             "bundles/fosjsrouting/js/router.js"
             "@EcentinelaComiconvBundle/Resources/public/jquery.js"
             "@EcentinelaComiconvBundle/Resources/public/canjs/can.jquery.js"
-            "@EcentinelaComiconvBundle/Resources/public/bootstrap/*.js"
+            "@EcentinelaComiconvBundle/Resources/public/jquerypp/jquerypp.js"
+            "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/bootstrap-tooltip.js"
+            "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/*.js"
             "@EcentinelaComiconvBundle/Resources/public/plupload/js/plupload.full.js"
             "@EcentinelaComiconvBundle/Resources/public/js/input.coffee"
         %}

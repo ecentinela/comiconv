@@ -1,13 +1,56 @@
 # input controller
 Input = can.Control
+    # drag the tr
+    '.icon-move draginit': ($el, e, drag) ->
+        $node = $el.closest 'tr'
+        file = $node.data 'file'
+
+        $el.data 'node', $node
+
+        drag.ghost().append "<span class='label label-info' style='margin-left:15px'>#{file.name}</span>"
+
+        drag.limit @tbody
+
+    # dropped the element
+    'tr dropon': ($el, e, drop, drag) ->
+        console.log drag
+        console.log drag.element
+        $node = drag.element.data 'node'
+        $node.insertBefore $el
+
+    # click on the trash icon to remove a file
+    '.icon-trash click': ($el, e) ->
+        # hide the tooltip manually
+        $el.tooltip 'hide'
+
+        # remove the file
+        @removeFile $el.closest('tr').data('file')
+
+    # upload the files
+    '.btn-primary click': ->
+        @uploader.start()
+
     # constructor
     init: ->
         # get elements
         @container = @element.find '.container'
         @uploaderError = @element.find '#requirement-error.hide'
+        @drop = @element.find '#drop'
+        @table = @element.find '#table'
+        @tbody = @table.find 'tbody'
+        @sample = @tbody.find 'tr'
+
+        @sample.remove()
+
+        # create tooltips
+        @createTooltips @element
 
         # prepare uploader
         @prepareUploader()
+
+    # create tooltips
+    createTooltips: ($node) ->
+        $node.find('[rel=tooltip]').tooltip()
 
     # prepare the uploader
     prepareUploader: ->
@@ -28,11 +71,10 @@ Input = can.Control
                 console.log 'drop'
 
             # prepare upload
-            uploader = new plupload.Uploader
+            @uploader = new plupload.Uploader
                 runtimes: 'html5,flash'
                 browse_button : 'upload-link'
-                drop_element: 'drop-area'
-                multi_selection: false
+                drop_element: 'body'
                 url: Routing.generate 'input'
                 flash_swf_url: '/bundles/ecentinelacomiconv/Resources/public/plupload/js/plupload.flash.swf'
                 filters: [
@@ -40,8 +82,8 @@ Input = can.Control
                     extensions: 'jpg,pdf,cbz'
                 ]
                 init:
-                    FilesAdded: =>
-                        console.log 'added'
+                    FilesAdded: (up, files) =>
+                        @addFile file for file in files
 
                     UploadProgress: (up, file) =>
                         console.log 'progress'
@@ -65,7 +107,44 @@ Input = can.Control
                         # show error
                         #@showError ExposeTranslation.get('views.account.register.upload_error')
 
-            uploader.init()
+            @uploader.init()
+
+    # get the node for the given file
+    nodeForFile: (file) ->
+        for node in @tbody.children 'tr'
+            $node = $(node)
+            return $node if file == $node.data('file')
+
+    # add the given file
+    addFile: (file) ->
+        # show the table if hidden
+        @table.addClass 'in' unless @table.hasClass 'in'
+
+        # create a row
+        $clone = @sample.clone()
+        $clone.find('td:eq(0)').html file.name
+        $clone.find('td:eq(1)').html plupload.formatSize(file.size)
+        $clone.appendTo @tbody
+
+        # add the file to the row
+        $clone.data 'file', file
+
+        # create tooltips
+        @createTooltips $clone
+
+    # removes the given file
+    removeFile: (file) ->
+        # get the node
+        $node = @nodeForFile file
+
+        # remove the node
+        $node.remove()
+
+        # remove the file from the uploader
+        @uploader.removeFile file
+
+        # hide the table if no more elements
+        @table.removeClass 'in' unless @tbody.children('tr').length
 
 # initialize input controller on dom ready
 $ -> new Input 'body'
