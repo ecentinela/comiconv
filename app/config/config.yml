@@ -4,11 +4,11 @@ imports:
 
 framework:
     #esi:             ~
-    #translator:      { fallback: %locale% }
+    translator:      { fallback: %locale% }
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
-        strict_parameters: %kernel.debug%
+        #strict_parameters: %kernel.debug%
     form:            true
     csrf_protection: true
     validation:      { enable_annotations: true }
@@ -68,4 +68,4 @@ swiftmailer:
 
 # FOS JS Routing
 fos_js_routing:
-    routes_to_expose: [ input ]
+    routes_to_expose: [ upload ]

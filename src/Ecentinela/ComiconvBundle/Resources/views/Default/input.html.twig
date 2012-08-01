@@ -66,6 +66,8 @@
                 </div>
 
                 <div id="table" class="span5 offset1 fade">
+                    <div id="fader"></div>
+
                     <table class="table table-striped table-bordered table-condensed">
                         <thead>
                             <tr>
@@ -105,10 +107,18 @@
                 <i class="icon-info-sign icon-white"></i>
                 You can drag multiple cbz or pdf files to join them in a single file.
             </span>
+
+            <br />
+
+            <span class="label label-warning">
+                <i class="icon-info-sign icon-white"></i>
+                Max file size upload is {{ maxFileSize }}
+            </span>
         </div>
 
         {% javascripts output="all.js"
             "bundles/fosjsrouting/js/router.js"
+            "bundles/bazingaexposetranslation/js/translation.js"
             "@EcentinelaComiconvBundle/Resources/public/jquery.js"
             "@EcentinelaComiconvBundle/Resources/public/canjs/can.jquery.js"
             "@EcentinelaComiconvBundle/Resources/public/jquerypp/jquerypp.js"
@@ -120,7 +130,10 @@
         <script type="text/javascript" src="{{ asset_url }}"></script>
         {% endjavascripts %}
 
-        <script type="text/javascript" src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+        <script type="text/javascript" src="{{ path("fos_js_routing_js", {"callback": "fos.Router.setData"}) }}"></script>
 
+        <script type="text/javascript" src="{{ url("bazinga_exposetranslation_js") }}"></script>
+
+        <script type="text/javascript">HASH = '{{ hash }}'</script>
     </body>
 </html>

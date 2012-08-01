@@ -1,22 +1,64 @@
 # input controller
 Input = can.Control
     # drag the tr
-    '.icon-move draginit': ($el, e, drag) ->
-        $node = $el.closest 'tr'
-        file = $node.data 'file'
+    '.icon-move draginit': ($drag, e, drag) ->
+        # set the node on the dragged element
+        $drag.data('node', $drag.closest 'tr')
 
-        $el.data 'node', $node
+        # create the drag
+        drag.ghost().html "<span class='label label-info' style='margin-left:15px'></span>"
 
-        drag.ghost().append "<span class='label label-info' style='margin-left:15px'>#{file.name}</span>"
+    # dragged element over a droppable
+    'tbody tr dropover': ($drop, e, drop, drag) ->
+        # add class to icons
+        $drop.find('i').addClass 'icon-white'
 
-        drag.limit @tbody
+        # get the dragged node
+        $drag = drag.element.data 'node'
+
+        # span on the dragged ghost
+        $span = drag.movingElement.find 'span'
+
+        # if dropping over same node
+        if $drag.is $drop
+            $drop.addClass 'dropover invalid'
+
+            $span.html "Can't be moved here"
+        # dropped over other node
+        else
+            $drop.addClass 'dropover'
+
+            dragFilename = $drag.data('file').name
+            dropFilename = $drop.data('file').name
+
+            $span.html "Insert #{dragFilename} before #{dropFilename}"
+
+    # dragged element out a droppable
+    'tbody tr dropout': ($drop) ->
+        # remove class to icons
+        $drop.find('i').removeClass 'icon-white'
+
+        # remove classes on drop element
+        $drop.removeClass 'dropover invalid'
 
     # dropped the element
-    'tr dropon': ($el, e, drop, drag) ->
-        console.log drag
-        console.log drag.element
-        $node = drag.element.data 'node'
-        $node.insertBefore $el
+    'tbody tr dropon': ($drop, e, drop, drag) ->
+        # remove class to icons
+        $drop.find('i').removeClass 'icon-white'
+
+        # remove classes on drop element
+        $drop.removeClass 'dropover invalid'
+
+        # get the dragged tr
+        $drag = drag.element.data 'node'
+
+        # if dropping on same elemtn
+        if $drag.is $drop
+            # revert the drag
+            drag.revert()
+        else
+            # insert the node before the dropped element
+            $drag.insertBefore $drop
 
     # click on the trash icon to remove a file
     '.icon-trash click': ($el, e) ->
@@ -28,6 +70,15 @@ Input = can.Control
 
     # upload the files
     '.btn-primary click': ->
+        # show fader
+        @fader.addClass 'in'
+
+        # reorder uploader files
+        @uploader.files = ($(node).data 'file' for node in @tbody.find 'tr')
+        for file, i in @uploader.files
+            file.params = total: @uploader.files.length, num: i + 1, hash: HASH
+
+        # initialize upload
         @uploader.start()
 
     # constructor
@@ -36,11 +87,17 @@ Input = can.Control
         @container = @element.find '.container'
         @uploaderError = @element.find '#requirement-error.hide'
         @drop = @element.find '#drop'
+        @fader = @element.find '#fader'
         @table = @element.find '#table'
         @tbody = @table.find 'tbody'
         @sample = @tbody.find 'tr'
 
         @sample.remove()
+
+        @progress = $('<div id="progress"><div></div></div>').appendTo 'body'
+        @progressDiv = @progress.find 'div'
+
+        @progress.hide()
 
         # create tooltips
         @createTooltips @element
@@ -75,7 +132,7 @@ Input = can.Control
                 runtimes: 'html5,flash'
                 browse_button : 'upload-link'
                 drop_element: 'body'
-                url: Routing.generate 'input'
+                url: Routing.generate('upload', _locale: ExposeTranslation.locale)
                 flash_swf_url: '/bundles/ecentinelacomiconv/Resources/public/plupload/js/plupload.flash.swf'
                 filters: [
                     title: 'Comic files (jpg, pdf, cbz)'
@@ -85,22 +142,39 @@ Input = can.Control
                     FilesAdded: (up, files) =>
                         @addFile file for file in files
 
+                    BeforeUpload: (up, file) =>
+                        # set file params
+                        up.settings.multipart_params = file.params
+
+                        # get the file tr node
+                        $node = @nodeForFile file
+
+                        # set the progress bar position
+                        @progress.show().css $node.offset()
+
+                        # add the node class
+                        $node.addClass 'uploading'
+
                     UploadProgress: (up, file) =>
-                        console.log 'progress'
-                        # set progress
-                        #@progress.height file.loaded * @progress.width() / file.size
+                        # update progress bar
+                        percent = file.loaded * @progress.width() / file.size
+                        @progressDiv.width "#{percent}%"
 
                     FileUploaded: (up, file, response) =>
-                        console.log 'uploaded'
-                        # hide progress
-                        #@progress.height 0
+                        # hide the progress
+                        @progress.hide()
 
-                        # set image and store it on image input
-                        #@imageImg.prop 'src', response.response
-                        #@image.val response.response
+                        # get the file tr node
+                        $node = @nodeForFile file
+
+                        # toggle node classes
+                        $node.removeClass('uploading').addClass('uploaded');
+
+                    UploadComplete: =>
+                        @table.replaceWith 'done!'
 
                     Error: (up, response) =>
-                        console.log 'error'
+                        console.log arguments
                         # hide progress
                         #@progress.height 0
 

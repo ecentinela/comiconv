@@ -43,11 +43,25 @@ class Conversion
     private $output;
 
     /**
-     * @var boolean $done
+     * @var integer $total_files
      *
-     * @ORM\Column(name="done", type="boolean")
+     * @ORM\Column(name="total_files", type="integer")
      */
-    private $done;
+    private $total_files;
+
+    /**
+     * @var integer $uploaded_files
+     *
+     * @ORM\Column(name="uploaded_files", type="integer")
+     */
+    private $uploaded_files;
+
+    /**
+     * @var string $status
+     *
+     * @ORM\Column(name="status", type="string", length=255)
+     */
+    private $status;
 
     /**
      * @var smallint $retries
@@ -70,11 +84,10 @@ class Conversion
      */
     private $updated_at;
 
-
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -90,13 +103,14 @@ class Conversion
     public function setHash($hash)
     {
         $this->hash = $hash;
+
         return $this;
     }
 
     /**
      * Get hash
      *
-     * @return string 
+     * @return string
      */
     public function getHash()
     {
@@ -112,13 +126,14 @@ class Conversion
     public function setInput($input)
     {
         $this->input = $input;
+
         return $this;
     }
 
     /**
      * Get input
      *
-     * @return string 
+     * @return string
      */
     public function getInput()
     {
@@ -134,13 +149,14 @@ class Conversion
     public function setOutput($output)
     {
         $this->output = $output;
+
         return $this;
     }
 
     /**
      * Get output
      *
-     * @return string 
+     * @return string
      */
     public function getOutput()
     {
@@ -148,25 +164,71 @@ class Conversion
     }
 
     /**
-     * Set done
+     * Set total_files
      *
-     * @param boolean $done
+     * @param integer $totalFiles
      * @return Conversion
      */
-    public function setDone($done)
+    public function setTotalFiles($totalFiles)
     {
-        $this->done = $done;
+        $this->total_files = $totalFiles;
+
         return $this;
     }
 
     /**
-     * Get done
+     * Get total_files
      *
-     * @return boolean 
+     * @return integer
      */
-    public function getDone()
+    public function getTotalFiles()
     {
-        return $this->done;
+        return $this->total_files;
+    }
+
+    /**
+     * Set uploaded_files
+     *
+     * @param integer $uploadedFiles
+     * @return Conversion
+     */
+    public function setUploadedFiles($uploadedFiles)
+    {
+        $this->uploaded_files = $uploadedFiles;
+
+        return $this;
+    }
+
+    /**
+     * Get uploaded_files
+     *
+     * @return integer
+     */
+    public function getUploadedFiles()
+    {
+        return $this->uploaded_files;
+    }
+
+    /**
+     * Set status
+     *
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**
@@ -178,13 +240,14 @@ class Conversion
     public function setRetries($retries)
     {
         $this->retries = $retries;
+
         return $this;
     }
 
     /**
      * Get retries
      *
-     * @return smallint 
+     * @return smallint
      */
     public function getRetries()
     {
@@ -200,13 +263,14 @@ class Conversion
     public function setCreatedAt($createdAt)
     {
         $this->created_at = $createdAt;
+
         return $this;
     }
 
     /**
      * Get created_at
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getCreatedAt()
     {
@@ -222,13 +286,14 @@ class Conversion
     public function setUpdatedAt($updatedAt)
     {
         $this->updated_at = $updatedAt;
+
         return $this;
     }
 
     /**
      * Get updated_at
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getUpdatedAt()
     {
