@@ -29,7 +29,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/upload", name="upload", requirements={ "_locale" = "en|es" })
+     * @Route("/{_locale}/upload", name="upload", requirements={ "_locale" = "en|es" }, options={ "expose" = true })
      */
     public function uploadAction()
     {
@@ -99,12 +99,31 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}", name="output", requirements={ "_locale" = "en|es" })
+     * @Route("/{_locale}/{hash}", name="output", requirements={ "_locale" = "en|es" }, options={ "expose" = true })
      * @Template()
      */
-    public function outputAction()
+    public function outputAction($hash)
     {
-        return array();
+        // get the conversion
+        $conversion = $this->getDoctrine()
+                           ->getEntityManager()
+                           ->getRepository('EcentinelaComiconvBundle:Conversion')
+                           ->findOneBy(array(
+                            'hash' => $hash
+                           ));
+
+        // invalid conversion status, redirect to input
+        if (!$conversion || $conversion->getStatus() == 'uploading' || $conversion->getStatus() == 'removed')
+        {
+            return $this->redirect(
+                $this->generateUrl('input')
+            );
+        }
+
+        // render template
+        return array(
+            'conversion' => $conversion
+        );
     }
 
     /**

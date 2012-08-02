@@ -51,6 +51,10 @@
             <h3>Your browser doesn't support file uploads.</h3>
         </div>
 
+        <div id="progress" class="progress progress-striped progress-success active fade">
+            <div class="bar"></div>
+        </div>
+
         <div class="container well hide">
 
             <h1>Comic conversor online</h1>
@@ -78,14 +82,15 @@
 
                         <tbody>
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td>
+                                <td class="name"></td>
+                                <td class="size"></td>
+                                <td class="move">
                                     <i class="icon-move" rel="tooltip" title="Drag to change position"></i>
                                 </td>
-                                <td>
+                                <td class="trash">
                                     <i class="icon-trash" rel="tooltip" title="Click to remove this file"></i>
                                 </td>
+                                <td class="retry"><button class="btn btn-danger">Retry</button></td>
                             </tr>
                         </tbody>
 

@@ -78,14 +78,6 @@ br {
     position: absolute;
     .size(29px, 499px);
     .opacity(50);
-
-    div {
-        background-color: green;
-        left: 0;
-        position: relative;
-        top: 0;
-        .size(100%, 0);
-    }
 }
 
 #drop-area {
@@ -132,6 +124,22 @@ br {
         position: relative;
         width: 500px;
 
+        .name,
+        .size,
+        .move,
+        .trash {
+            line-height: 30px;
+        }
+
+        .move,
+        .trash {
+            width: 14px;
+        }
+
+        .retry {
+            text-align: center;
+        }
+
         .icon-move {
             cursor: move;
         }
@@ -141,6 +149,7 @@ br {
         }
 
         tr.uploading,
+        tr.uploaded,
         tr.error {
             .icon-move,
             .icon-trash {

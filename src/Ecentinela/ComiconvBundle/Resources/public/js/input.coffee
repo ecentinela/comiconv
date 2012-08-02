@@ -88,16 +88,13 @@ Input = can.Control
         @uploaderError = @element.find '#requirement-error.hide'
         @drop = @element.find '#drop'
         @fader = @element.find '#fader'
+        @progress = @element.find '#progress'
+        @progressDiv = @progress.find 'div'
         @table = @element.find '#table'
         @tbody = @table.find 'tbody'
         @sample = @tbody.find 'tr'
 
         @sample.remove()
-
-        @progress = $('<div id="progress"><div></div></div>').appendTo 'body'
-        @progressDiv = @progress.find 'div'
-
-        @progress.hide()
 
         # create tooltips
         @createTooltips @element
@@ -150,7 +147,7 @@ Input = can.Control
                         $node = @nodeForFile file
 
                         # set the progress bar position
-                        @progress.show().css $node.offset()
+                        @progress.addClass('in').css $node.offset()
 
                         # add the node class
                         $node.addClass 'uploading'
@@ -162,7 +159,7 @@ Input = can.Control
 
                     FileUploaded: (up, file, response) =>
                         # hide the progress
-                        @progress.hide()
+                        @progress.removeClass 'in'
 
                         # get the file tr node
                         $node = @nodeForFile file
@@ -171,7 +168,7 @@ Input = can.Control
                         $node.removeClass('uploading').addClass('uploaded');
 
                     UploadComplete: =>
-                        @table.replaceWith 'done!'
+                        location.href = Routing.generate 'output', _locale: ExposeTranslation.locale, hash: HASH
 
                     Error: (up, response) =>
                         console.log arguments
