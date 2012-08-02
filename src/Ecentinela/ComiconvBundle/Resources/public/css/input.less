@@ -68,6 +68,10 @@ body {
 body {
     overflow-x: hidden;
     #gradient .vertical(#efefef, #ccc);
+
+    &.dragenter #drop-area #drop {
+        .opacity(100);
+    }
 }
 
 br {
@@ -76,8 +80,12 @@ br {
 
 #progress {
     position: absolute;
-    .size(29px, 499px);
-    .opacity(50);
+    z-index: 1;
+    .size(40px, 499px);
+
+    &.in {
+        .opacity(50);
+    }
 }
 
 #drop-area {
@@ -86,6 +94,8 @@ br {
 
     #drop {
         text-align: center;
+        .transition(opacity .3s linear);
+        .opacity(60);
 
         img {
             border: 3px dashed #999;
@@ -124,20 +134,10 @@ br {
         position: relative;
         width: 500px;
 
-        .name,
-        .size,
         .move,
-        .trash {
-            line-height: 30px;
-        }
-
-        .move,
-        .trash {
-            width: 14px;
-        }
-
+        .trash,
         .retry {
-            text-align: center;
+            width: 14px;
         }
 
         .icon-move {
@@ -148,12 +148,27 @@ br {
             cursor: pointer;
         }
 
+        .icon-repeat {
+            cursor: pointer;
+            display: none;
+        }
+
         tr.uploading,
         tr.uploaded,
         tr.error {
             .icon-move,
             .icon-trash {
                 display: none;
+            }
+        }
+
+        tr.error {
+            td {
+                #gradient > .vertical(#ee5f5b, #c43c35);
+            }
+
+            .icon-repeat {
+                display: block;
             }
         }
 

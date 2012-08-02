@@ -69,7 +69,10 @@ Input = can.Control
         @removeFile $el.closest('tr').data('file')
 
     # upload the files
-    '.btn-primary click': ->
+    '.btn-primary click': ($el) ->
+        # disable button
+        $el.prop 'disabled', 'disabled'
+
         # show fader
         @fader.addClass 'in'
 
@@ -77,6 +80,17 @@ Input = can.Control
         @uploader.files = ($(node).data 'file' for node in @tbody.find 'tr')
         for file, i in @uploader.files
             file.params = total: @uploader.files.length, num: i + 1, hash: HASH
+
+        # initialize upload
+        @uploader.start()
+
+    # click on the retry button
+    '.icon-repeat click': ($el, e) ->
+        # get the file
+        file = $el.closest('tr').data 'file'
+
+        # set the file on the uploader
+        @uploader.files = [file]
 
         # initialize upload
         @uploader.start()
@@ -118,11 +132,11 @@ Input = can.Control
 
             # events on drag & drop
             @element.on 'dragenter', =>
-                console.log 'enter'
+                @element.addClass 'dragenter'
             .on 'dragexit', =>
-                console.log 'exit'
+                @element.removeClass 'dragenter'
             .on 'drop', =>
-                console.log 'drop'
+                @element.removeClass 'dragenter'
 
             # prepare upload
             @uploader = new plupload.Uploader
@@ -167,16 +181,22 @@ Input = can.Control
                         # toggle node classes
                         $node.removeClass('uploading').addClass('uploaded');
 
-                    UploadComplete: =>
-                        location.href = Routing.generate 'output', _locale: ExposeTranslation.locale, hash: HASH
+                    UploadComplete: (up) =>
+                        # hide the progress
+                        @progress.removeClass 'in'
+
+                        # redirect if no failed files
+                        location.href = Routing.generate('output', _locale: ExposeTranslation.locale, hash: HASH) unless up.total.failed
 
                     Error: (up, response) =>
-                        console.log arguments
-                        # hide progress
-                        #@progress.height 0
+                        # get the file
+                        file = response.file
 
-                        # show error
-                        #@showError ExposeTranslation.get('views.account.register.upload_error')
+                        # get the node with the file
+                        $node = @nodeForFile file
+
+                        # mark the node as error
+                        $node.addClass 'error'
 
             @uploader.init()
 
