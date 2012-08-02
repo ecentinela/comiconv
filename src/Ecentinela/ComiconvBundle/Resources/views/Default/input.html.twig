@@ -34,9 +34,9 @@
 
                     <div class="nav-collapse">
                         <ul class="nav">
-                            <li><a href="{{ path("about") }}">About</a></li>
+                            <li><a href="{{ path("about") }}">{{ "input.about" | trans }}</a></li>
 
-                            <li><a href="{{ path("contact") }}">Contact</a></li>
+                            <li><a href="{{ path("contact") }}">{{ "input.contact" | trans }}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -44,29 +44,29 @@
         </div>
 
         <noscript id="requirement-error">
-            <h3>You should enable javascript to work with this site.</h3>
+            <h3>{{ "input.enable_javascript" | trans }}</h3>
         </noscript>
 
         <div id="requirement-error" class="hide">
-            <h3>Your browser doesn't support file uploads.</h3>
+            <h3>{{ "input.browser_not_upload" | trans }}</h3>
         </div>
 
-        <div id="progress" class="progress progress-striped progress-success active fade">
+        <div id="progress" class="progress progress-striped progress-success active fade hide">
             <div class="bar"></div>
         </div>
 
         <div class="container well hide">
 
-            <h1>Comic conversor online</h1>
+            <h1>{{ "input.title" | trans }}</h1>
 
-            <p><strong>Drop the files</strong> or click <strong>to add files</strong> to convert them to another format.</p>
+            <p>{{ "input.description" | trans | raw }}</p>
 
             <div id="drop-area" class="row">
 
                 <div id="drop" class="span4">
                     <img src="{{ asset("bundles/ecentinelacomiconv/images/drop.png") }}" alt="drop" />
 
-                    <a href="#" id="upload-link">Drag files here or click to add files</a>
+                    <a href="#" id="upload-link">{{ "input.drag_or_click_to_add" | trans }}</a>
                 </div>
 
                 <div id="table" class="span5 offset1 fade">
@@ -75,8 +75,8 @@
                     <table class="table table-striped table-bordered table-condensed">
                         <thead>
                             <tr>
-                                <th>Filename</th>
-                                <th>Size</th>
+                                <th>{{ "input.filename" | trans }}</th>
+                                <th>{{ "input.size" | trans }}</th>
                             </tr>
                         </thead>
 
@@ -85,21 +85,21 @@
                                 <td class="name"></td>
                                 <td class="size"></td>
                                 <td class="move">
-                                    <i class="icon-move" rel="tooltip" title="Drag to change position"></i>
+                                    <i class="icon-move" rel="tooltip" title="{{ "input.drag_to_change" | trans }}"></i>
                                 </td>
                                 <td class="trash">
-                                    <i class="icon-trash" rel="tooltip" title="Click to remove this file"></i>
+                                    <i class="icon-trash" rel="tooltip" title="{{ "input.click_to_remove" | trans }}"></i>
                                 </td>
                                 <td class="retry">
-                                    <i class="icon-repeat" rel="tooltip" title="Click to retry upload"></i>
+                                    <i class="icon-repeat icon-white" rel="tooltip" title="{{ "input.click_to_retry" | trans }}"></i>
                                 </td>
                             </tr>
                         </tbody>
 
                         <tfoot>
                             <tr>
-                                <td colspan="4">
-                                    <button class="btn btn-primary pull-right">Upload!</button>
+                                <td colspan="5">
+                                    <button class="btn btn-primary pull-right">{{ "input.upload" | trans }}</button>
                                 </td>
                             </tr>
                         </tfoot>
@@ -112,14 +112,14 @@
 
             <span class="label label-info">
                 <i class="icon-info-sign icon-white"></i>
-                You can drag multiple cbz or pdf files to join them in a single file.
+                {{ "input.drag_multiple_note" | trans }}
             </span>
 
             <br />
 
             <span class="label label-warning">
                 <i class="icon-info-sign icon-white"></i>
-                Max file size upload is {{ maxFileSize }}
+                {{ "input.max_file_size" | trans({ "%max_file_size%": maxFileSize }) }}
             </span>
         </div>
 
@@ -141,6 +141,6 @@
 
         <script type="text/javascript" src="{{ url("bazinga_exposetranslation_js") }}"></script>
 
-        <script type="text/javascript">HASH = '{{ hash }}'</script>
+        <script type="text/javascript">HASH = '{{ hash }}', MAX_FILE_SIZE = '{{ maxFileSize }}'</script>
     </body>
 </html>

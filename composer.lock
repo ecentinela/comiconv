@@ -4,8 +4,8 @@
         {
             "package": "doctrine/common",
             "version": "2.3.x-dev",
-            "source-reference": "1ba1f944c174db5ea2320fab3f49a6ca0ea79b9b",
-            "commit-date": "1343558692"
+            "source-reference": "2ec4bc6db13db6a0976a16b71058083c55cbcdbd",
+            "commit-date": "1343847076"
         },
         {
             "package": "doctrine/dbal",
@@ -22,8 +22,8 @@
         {
             "package": "doctrine/orm",
             "version": "2.3.x-dev",
-            "source-reference": "3f2ddc60d42ebc140de7bbadf7f7af6115c3690a",
-            "commit-date": "1343745264"
+            "source-reference": "17862d9a2a38bf801e564d09a26eea8503621ae0",
+            "commit-date": "1343850025"
         },
         {
             "package": "friendsofsymfony/jsrouting-bundle",
@@ -116,8 +116,14 @@
         {
             "package": "symfony/assetic-bundle",
             "version": "dev-master",
-            "source-reference": "24df9ede95084be882aeb557eaef5b761cfa00e0",
-            "commit-date": "1343684934"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
+        },
+        {
+            "package": "symfony/assetic-bundle",
+            "version": "dev-master",
+            "source-reference": "0c09207be07b044e06d28a4111f554f071e5b658",
+            "commit-date": "1343812720"
         },
         {
             "package": "symfony/monolog-bundle",

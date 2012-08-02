@@ -33,9 +33,6 @@ class DefaultController extends Controller
      */
     public function uploadAction()
     {
-        sleep(3);
-        return $this->createNotFoundException();
-        exit;
         // get the request
         $request = $this->getRequest();
 

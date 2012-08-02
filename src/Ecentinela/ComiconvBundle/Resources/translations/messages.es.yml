@@ -1,0 +1,19 @@
+input:
+    insert_before: Insertar %drag_filename% antes de %drop_filename%
+    file_types: Ficheros de cómic (pdf, cbr, jpg)
+    retry_all: Reintentar todos
+    about: Acerca de
+    contact: Contacto
+    enable_javascript: Tienes que activar javascript para que esta web funcione.
+    browser_not_upload: Tu navegador no soporta la subida de archivos.
+    title: Conversor de cómics online
+    description: <strong>Arrastra los archivos</strong> o pincha para <strong>añadir archivos</strong> que convertir a otro formato.
+    drag_or_click_to_add: Arrastra archivos o pincha para añadirlos
+    filename: Nombre
+    size: Tamaño
+    drag_to_change: Arrastra para cambiar la posición
+    click_to_remove: Pincha para eliminar el archivo
+    click_to_retry: Pincha para reintentar la carga
+    upload: Cargar!
+    drag_multiple_note: Puedes cargar varios archivos cbz o pdf para unirlos en uno.
+    max_file_size: El tamaño máximo de la subida es de %max_file_size%

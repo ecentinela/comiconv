@@ -31,7 +31,7 @@ Input = can.Control
             dragFilename = $drag.data('file').name
             dropFilename = $drop.data('file').name
 
-            $span.html "Insert #{dragFilename} before #{dropFilename}"
+            $span.html(ExposeTranslation.get 'views.insert_before', '%drag_filename%': dragFilename, '%drop_filename%': dropFilename)
 
     # dragged element out a droppable
     'tbody tr dropout': ($drop) ->
@@ -68,6 +68,21 @@ Input = can.Control
         # remove the file
         @removeFile $el.closest('tr').data('file')
 
+    # click on the retry button
+    '.icon-repeat click': ($el, e) ->
+        # get the file
+        file = $el.closest('tr').data 'file'
+
+        # reset the plupload
+        @uploader.destroy()
+        @uploader.init()
+
+        # set the file on the uploader
+        @uploader.files = [file]
+        console.log @uploader
+        # initialize upload
+        @uploader.start()
+
     # upload the files
     '.btn-primary click': ($el) ->
         # disable button
@@ -84,16 +99,13 @@ Input = can.Control
         # initialize upload
         @uploader.start()
 
-    # click on the retry button
-    '.icon-repeat click': ($el, e) ->
-        # get the file
-        file = $el.closest('tr').data 'file'
+    # upload the files
+    '.btn-warning click': ($el) ->
+        # disable button
+        $el.prop 'disabled', 'disabled'
 
-        # set the file on the uploader
-        @uploader.files = [file]
-
-        # initialize upload
-        @uploader.start()
+        # add failed files
+        @uploader.files = []
 
     # constructor
     init: ->
@@ -106,6 +118,7 @@ Input = can.Control
         @progressDiv = @progress.find 'div'
         @table = @element.find '#table'
         @tbody = @table.find 'tbody'
+        @button = @element.find '.btn'
         @sample = @tbody.find 'tr'
 
         @sample.remove()
@@ -145,8 +158,9 @@ Input = can.Control
                 drop_element: 'body'
                 url: Routing.generate('upload', _locale: ExposeTranslation.locale)
                 flash_swf_url: '/bundles/ecentinelacomiconv/Resources/public/plupload/js/plupload.flash.swf'
+                max_file_size: MAX_FILE_SIZE
                 filters: [
-                    title: 'Comic files (jpg, pdf, cbz)'
+                    title: ExposeTranslation.get 'input.file_types'
                     extensions: 'jpg,pdf,cbz'
                 ]
                 init:
@@ -161,19 +175,18 @@ Input = can.Control
                         $node = @nodeForFile file
 
                         # set the progress bar position
-                        @progress.addClass('in').css $node.offset()
+                        @progress.removeClass('hide').addClass('in').css $node.offset()
 
                         # add the node class
                         $node.addClass 'uploading'
 
                     UploadProgress: (up, file) =>
                         # update progress bar
-                        percent = file.loaded * @progress.width() / file.size
-                        @progressDiv.width "#{percent}%"
+                        @progressDiv.width file.loaded * @progress.width() / file.size
 
                     FileUploaded: (up, file, response) =>
                         # hide the progress
-                        @progress.removeClass 'in'
+                        @progress.removeClass('in').addClass('hide')
 
                         # get the file tr node
                         $node = @nodeForFile file
@@ -183,10 +196,16 @@ Input = can.Control
 
                     UploadComplete: (up) =>
                         # hide the progress
-                        @progress.removeClass 'in'
+                        @progress.removeClass('in').addClass('hide')
+
+                        # hide the fader
+                        @fader.removeClass 'in'
 
                         # redirect if no failed files
-                        location.href = Routing.generate('output', _locale: ExposeTranslation.locale, hash: HASH) unless up.total.failed
+                        if up.total.failed
+                            @button.attr('disabled', null).removeClass('btn-primary').addClass('btn-warning').html ExposeTranslation.get 'input.retry_all'
+                        else
+                            location.href = Routing.generate('output', _locale: ExposeTranslation.locale, hash: HASH)
 
                     Error: (up, response) =>
                         # get the file
