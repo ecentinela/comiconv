@@ -4,6 +4,8 @@ namespace Ecentinela\ComiconvBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
  * Ecentinela\ComiconvBundle\Entity\Conversion
  *
@@ -27,20 +29,6 @@ class Conversion
      * @ORM\Column(name="hash", type="string", length=255)
      */
     private $hash;
-
-    /**
-     * @var string $input
-     *
-     * @ORM\Column(name="input", type="string", length=255)
-     */
-    private $input;
-
-    /**
-     * @var string $output
-     *
-     * @ORM\Column(name="output", type="string", length=255)
-     */
-    private $output;
 
     /**
      * @var integer $total_files
@@ -74,6 +62,7 @@ class Conversion
      * @var datetime $created_at
      *
      * @ORM\Column(name="created_at", type="datetime")
+     * @Gedmo\Timestampable(on="create")
      */
     private $created_at;
 
@@ -81,6 +70,7 @@ class Conversion
      * @var datetime $updated_at
      *
      * @ORM\Column(name="updated_at", type="datetime")
+     * @Gedmo\Timestampable(on="update")
      */
     private $updated_at;
 
@@ -115,52 +105,6 @@ class Conversion
     public function getHash()
     {
         return $this->hash;
-    }
-
-    /**
-     * Set input
-     *
-     * @param string $input
-     * @return Conversion
-     */
-    public function setInput($input)
-    {
-        $this->input = $input;
-
-        return $this;
-    }
-
-    /**
-     * Get input
-     *
-     * @return string
-     */
-    public function getInput()
-    {
-        return $this->input;
-    }
-
-    /**
-     * Set output
-     *
-     * @param string $output
-     * @return Conversion
-     */
-    public function setOutput($output)
-    {
-        $this->output = $output;
-
-        return $this;
-    }
-
-    /**
-     * Get output
-     *
-     * @return string
-     */
-    public function getOutput()
-    {
-        return $this->output;
     }
 
     /**

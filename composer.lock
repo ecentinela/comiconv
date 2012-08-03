@@ -1,5 +1,5 @@
 {
-    "hash": "784ecb83183abe45e59270036f9ec378",
+    "hash": "fe0c71c6b9e996eb0004d21df7dd4e30",
     "packages": [
         {
             "package": "doctrine/common",
@@ -30,6 +30,18 @@
             "version": "dev-master",
             "source-reference": "69a8b5cb437ce415a72ad12274bb59a06b2c0cf5",
             "commit-date": "1343207051"
+        },
+        {
+            "package": "gedmo/doctrine-extensions",
+            "version": "dev-master",
+            "alias-pretty-version": "2.3.x-dev",
+            "alias-version": "2.3.9999999.9999999-dev"
+        },
+        {
+            "package": "gedmo/doctrine-extensions",
+            "version": "dev-master",
+            "source-reference": "c801d6f5d9f768680a7f71dc4f27c8cb11acd0af",
+            "commit-date": "1343804719"
         },
         {
             "package": "jms/aop-bundle",
@@ -86,8 +98,8 @@
         {
             "package": "sensio/distribution-bundle",
             "version": "dev-master",
-            "source-reference": "5886adae1613c0a72fbb95259a83ae798e86c0d3",
-            "commit-date": "1342347850"
+            "source-reference": "26a1165b8cfbde91bf01d809f87bc286f18f0963",
+            "commit-date": "1343979103"
         },
         {
             "package": "sensio/framework-extra-bundle",
@@ -116,12 +128,6 @@
         {
             "package": "symfony/assetic-bundle",
             "version": "dev-master",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
-        },
-        {
-            "package": "symfony/assetic-bundle",
-            "version": "dev-master",
             "source-reference": "0c09207be07b044e06d28a4111f554f071e5b658",
             "commit-date": "1343812720"
         },
@@ -146,8 +152,8 @@
         {
             "package": "symfony/symfony",
             "version": "dev-master",
-            "source-reference": "b1618d210cb7e27036edcea9c163a94167e7df59",
-            "commit-date": "1343747192"
+            "source-reference": "6f32078b1a59f12777eaff89da8c370bc966123e",
+            "commit-date": "1343978940"
         },
         {
             "package": "twig/extensions",
@@ -187,6 +193,7 @@
         "symfony/monolog-bundle": 20,
         "sensio/distribution-bundle": 20,
         "sensio/framework-extra-bundle": 20,
-        "sensio/generator-bundle": 20
+        "sensio/generator-bundle": 20,
+        "gedmo/doctrine-extensions": 20
     }
 }

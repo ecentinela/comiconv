@@ -3,7 +3,8 @@
 namespace Ecentinela\ComiconvBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
-    Symfony\Component\HttpFoundation\Response;
+    Symfony\Component\HttpFoundation\Response,
+    Symfony\Component\HttpKernel\Exception\HttpException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
     Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -36,15 +37,12 @@ class DefaultController extends Controller
         // get the request
         $request = $this->getRequest();
 
-        // get params
-        $params = $request->request;
-
         // get uploaded file
         $file = $request->files->get('file');
 
         // upload is ok
         if ($file->isValid()) {
-            if (preg_match('/(png|cbz|jpg)/', $file->getMimeType()))
+            if (preg_match('/(pdf|cbz|jpg)/', $file->guessExtension()))
             {
                 // get the entity manager and the repository
                 $em = $this->getDoctrine()->getEntityManager();
@@ -52,18 +50,33 @@ class DefaultController extends Controller
 
                 // find the conversion with the given hash
                 $conversion = $repository->findOneBy(array(
-                    'hash' => $params->get('hash')
+                    'hash' => $request->request->get('hash')
                 ));
 
                 // if no conversion found, create a new one
                 if (!$conversion) {
                     $conversion = new Conversion();
 
+                    $conversion->setRetries(0);
+
+                    $conversion->setHash(
+                        $request->request->get('hash')
+                    );
+
                     $conversion->setTotalFiles(
-                        $params->get('total')
+                        $request->request->get('total')
                     );
 
                     $conversion->setStatus('uploading');
+
+                    $path = $this->get('kernel')->getRootDir().'/../files/input/'.$conversion->getHash().'/';
+
+                    if (file_exists($path)) {
+                        return new HttpException(409, 'Invalid hash');
+                    }
+                }
+                else {
+                    $path = $this->get('kernel')->getRootDir().'/../files/input/'.$conversion->getHash().'/';
                 }
 
                 // increment uploaded files
@@ -76,13 +89,23 @@ class DefaultController extends Controller
                     $conversion->setStatus('uploaded');
                 }
 
+                // move uploaded file
+                $file->move(
+                    $path,
+                    $conversion->getUploadedFiles().'.'.$file->guessExtension()
+                );
+
                 // save conversion
                 $em->persist($conversion);
                 $em->flush();
+
+                return new Response('Upload OK', 200);
             }
+
+            return new HttpException(500, 'Invalid file type');
         }
 
-        return new Response('', 500);
+        return new HttpException(500, 'Upload file');
     }
 
     /**
