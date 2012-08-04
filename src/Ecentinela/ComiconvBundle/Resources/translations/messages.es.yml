@@ -14,6 +14,8 @@ input:
     drag_to_change: Arrastra para cambiar la posición
     click_to_remove: Pincha para eliminar el archivo
     click_to_retry: Pincha para reintentar la carga
+    convert_to_cbz: Convertir a CBZ
+    convert_to_pdf: Convertir a PDF
     upload: Cargar!
     drag_multiple_note: Puedes cargar varios archivos cbz o pdf para unirlos en uno.
     max_file_size: El tamaño máximo de la subida es de %max_file_size%

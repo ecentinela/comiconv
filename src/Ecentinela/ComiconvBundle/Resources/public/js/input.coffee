@@ -91,10 +91,13 @@ Input = can.Control
         # show fader
         @fader.addClass 'in'
 
+        # get format
+        format = @format.val()
+
         # reorder uploader files
         @uploader.files = ($(node).data 'file' for node in @tbody.find 'tr')
         for file, i in @uploader.files
-            file.params = total: @uploader.files.length, num: i + 1, hash: HASH
+            file.params = total: @uploader.files.length, num: i + 1, hash: HASH, format: format
 
         # initialize upload
         @uploader.start()
@@ -116,9 +119,10 @@ Input = can.Control
         @fader = @element.find '#fader'
         @progress = @element.find '#progress'
         @progressDiv = @progress.find 'div'
+        @format = @element.find '#format'
+        @button = @element.find '.btn'
         @table = @element.find '#table'
         @tbody = @table.find 'tbody'
-        @button = @element.find '.btn'
         @sample = @tbody.find 'tr'
 
         @sample.remove()
@@ -159,10 +163,11 @@ Input = can.Control
                 url: Routing.generate('upload', _locale: ExposeTranslation.locale)
                 flash_swf_url: '/bundles/ecentinelacomiconv/Resources/public/plupload/js/plupload.flash.swf'
                 max_file_size: MAX_FILE_SIZE
-                filters: [
-                    title: ExposeTranslation.get 'input.file_types'
-                    extensions: 'jpg,pdf,cbz'
-                ]
+                # filters: [
+                #     { title: 'Comic files', extensions: 'cbz,zip' }
+                #     { title: 'Image files', extensions: 'jpg' }
+                #     { title: 'PDF files', extensions: 'pdf' }
+                # ]
                 init:
                     FilesAdded: (up, files) =>
                         @addFile file for file in files

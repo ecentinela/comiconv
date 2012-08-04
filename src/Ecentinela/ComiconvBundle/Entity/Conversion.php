@@ -31,6 +31,20 @@ class Conversion
     private $hash;
 
     /**
+     * @var string $format
+     *
+     * @ORM\Column(name="format", type="string", length=255)
+     */
+    private $format;
+
+    /**
+     * @var string $email
+     *
+     * @ORM\Column(name="email", type="string", length=255)
+     */
+    private $email;
+
+    /**
      * @var integer $total_files
      *
      * @ORM\Column(name="total_files", type="integer")
@@ -105,6 +119,52 @@ class Conversion
     public function getHash()
     {
         return $this->hash;
+    }
+
+    /**
+     * Set format
+     *
+     * @param string $format
+     * @return Conversion
+     */
+    public function setFormat($format)
+    {
+        $this->format = $format;
+
+        return $this;
+    }
+
+    /**
+     * Get format
+     *
+     * @return string
+     */
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return Conversion
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     /**

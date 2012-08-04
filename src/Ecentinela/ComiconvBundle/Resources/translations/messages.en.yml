@@ -14,6 +14,8 @@ input:
     drag_to_change: Drag to change position
     click_to_remove: Click to remove this file
     click_to_retry: Click to retry upload
+    convert_to_cbz: Convert to CBZ
+    convert_to_pdf: Convert to PDF
     upload: Upload!
     drag_multiple_note: You can drag multiple cbz or pdf files to join them in a single file.
     max_file_size: Max file size upload is %max_file_size%

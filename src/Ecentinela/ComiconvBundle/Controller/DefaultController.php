@@ -42,7 +42,7 @@ class DefaultController extends Controller
 
         // upload is ok
         if ($file->isValid()) {
-            if (preg_match('/(pdf|cbz|jpg)/', $file->guessExtension()))
+            if (preg_match('/(pdf|cbz|zip|jpg)/', $file->guessExtension()))
             {
                 // get the entity manager and the repository
                 $em = $this->getDoctrine()->getEntityManager();
@@ -63,6 +63,10 @@ class DefaultController extends Controller
                         $request->request->get('hash')
                     );
 
+                    $conversion->setFormat(
+                        $request->request->get('format')
+                    );
+
                     $conversion->setTotalFiles(
                         $request->request->get('total')
                     );
@@ -72,7 +76,7 @@ class DefaultController extends Controller
                     $path = $this->get('kernel')->getRootDir().'/../files/input/'.$conversion->getHash().'/';
 
                     if (file_exists($path)) {
-                        return new HttpException(409, 'Invalid hash');
+                        throw new HttpException(409, 'Invalid hash');
                     }
                 }
                 else {
@@ -102,10 +106,10 @@ class DefaultController extends Controller
                 return new Response('Upload OK', 200);
             }
 
-            return new HttpException(500, 'Invalid file type');
+            throw new HttpException(500, 'Invalid file type: ' . $file->guessExtension());
         }
 
-        return new HttpException(500, 'Upload file');
+        throw new HttpException(500, 'Upload file');
     }
 
     /**
