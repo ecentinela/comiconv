@@ -170,7 +170,7 @@ class ConversionCommand extends ContainerAwareCommand
 
         if ($res === true) {
             // info message
-            $output->write('  Extracting <info>cbz</info> file <info>'.$file->getFilename().'</info>... ');
+            $output->write('  Extracting file <info>'.$file->getFilename().'</info>... ');
 
             // extract the zip
             $zip->extractTo($tmp);
@@ -218,7 +218,28 @@ class ConversionCommand extends ContainerAwareCommand
      */
     private function pdfToJpg(OutputInterface $output, $file, $path, &$index)
     {
+        // create the temp directory
+        if (!$tmp = $this->tempdir($path, $index)) {
+            throw new \Exception('can not create tmp folder to extract pdf images');
+        }
 
+        // create the image magick file
+        $pdf = new \Imagick(
+            $file->getPathname()
+        );
+
+        // info message
+        $output->write('  Extracting file <info>'.$file->getFilename().'</info>... ');
+
+        // extract images from pdf
+        foreach ($pdf as $img) {
+            $img->writeImage("$path/$index.jpg");
+
+            $index++;
+        }
+
+        // info message
+        $output->writeLn('done!');
     }
 
     /**
@@ -227,9 +248,40 @@ class ConversionCommand extends ContainerAwareCommand
      * @param OutputInterface $output The console output.
      * @param string          $path   The path where the files are.
      */
-    private function jpgToPdf(OutputInterface $output, $dstPath)
+    private function jpgToPdf(OutputInterface $output, $path)
     {
+        // info message
+        $output->write('  Creating <info>pdf</info> file <info>'.basename($path).'</info>... ');
 
+        // get image files
+        $files = Finder::create()
+                       ->files()
+                       ->in($path)
+                       ->name('/\.jpg/')
+                       ->depth('< 1')
+                       ->sort(function(SplFileInfo $file1, SplFileInfo $file2) {
+                            // extract page number
+                            $index1 = intval($file1->getFilename());
+                            $index2 = intval($file2->getFilename());
+
+                            return $index1 > $index2 ? 1 : ($index1 < $index2 ? -1 : 0);
+                       })
+                       ->getIterator();
+
+        // get files
+        $paths = array();
+
+        foreach ($files as $file) {
+            $paths[] = $file->getPathname();
+        }
+
+        // create the pdf
+        $im = new \Imagick($paths);
+
+        $im->writeImages("$path.pdf", true);
+
+        // info message
+        $output->writeLn('done!');
     }
 
     /**
