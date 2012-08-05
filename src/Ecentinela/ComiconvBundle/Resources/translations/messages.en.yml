@@ -19,7 +19,7 @@ input:
     upload: Upload!
     drag_multiple_note: You can drag multiple cbz or pdf files to join them in a single file.
     max_file_size: Max file size upload is %max_file_size%
-    form_me: Fork me on GitHub
+    fork_me: Fork me on GitHub
 
 output:
     about: About
@@ -27,6 +27,9 @@ output:
     enable_javascript: You should enable javascript to work with this site.
     title: Your conversion job is in queue!
     description: The conversion is an intensive work, so it can take a while. You can stay on this page until the download link appears or write down your email and we will send you a notice when the conversion is done.
-    filename: Filename
-    size: Size
-    form_me: Fork me on GitHub
+    fork_me: Fork me on GitHub
+    click_to_download: Click here to download the file (%size%)
+    download_link_appear_here: Your download link will appear here when available
+    check: Check again in <strong>%seconds%</strong> seconds
+    checking: Checking...
+    send: Send

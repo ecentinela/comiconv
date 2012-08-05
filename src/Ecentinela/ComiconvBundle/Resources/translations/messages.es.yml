@@ -19,4 +19,17 @@ input:
     upload: Cargar!
     drag_multiple_note: Puedes cargar varios archivos cbz o pdf para unirlos en uno.
     max_file_size: El tamaño máximo de la subida es de %max_file_size%
-    form_me: Clóname en GitHub
+    fork_me: Clóname en GitHub
+
+output:
+    about: Acerca de
+    contact: Contacto
+    enable_javascript: Tienes que activar javascript para que esta web funcione.
+    title: La conversión está en cola!
+    description: El trabajo de conversión es intensivo, por lo que puede tomar un tiempo. Puedes permanecer en esta página esperando a que aparezca el enlace de descarga o puedes escribir tu email en el formulario inferior y te lo enviaremos cuando la conversión haya acabado.
+    fork_me: Clóname en GitHub
+    click_to_download: Pincha aquí para descargar el archivo (%size%)
+    download_link_appear_here: Tu enlace de descarga aparecerá aqui cuando esté disponible
+    check: Se comprobará de nuevo en <strong>%seconds%</strong> segundos
+    checking: Comprobando...
+    send: Enviar

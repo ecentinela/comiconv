@@ -3,6 +3,7 @@
 namespace Ecentinela\ComiconvBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
+    Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response,
     Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -16,12 +17,12 @@ class DefaultController extends Controller
     /**
      * @Route("/")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         return $this->redirect(
             $this->generateUrl('input', array(
                 '_locale' => substr(
-                    $this->getRequest()->getPreferredLanguage(),
+                    $request->getPreferredLanguage(),
                     0,
                     2
                 )
@@ -32,18 +33,14 @@ class DefaultController extends Controller
     /**
      * @Route("/{_locale}/upload", name="upload", requirements={ "_locale" = "en|es" }, options={ "expose" = true })
      */
-    public function uploadAction()
+    public function uploadAction(Request $request)
     {
-        // get the request
-        $request = $this->getRequest();
-
         // get uploaded file
         $file = $request->files->get('file');
 
         // upload is ok
         if ($file->isValid()) {
-            if (preg_match('/(pdf|cbz|zip|jpg)/', $file->guessExtension()))
-            {
+            if (preg_match('/(pdf|cbz|zip|jpg)/', $file->guessExtension())) {
                 // get the entity manager and the repository
                 $em = $this->getDoctrine()->getEntityManager();
                 $repository = $em->getRepository('EcentinelaComiconvBundle:Conversion');
@@ -78,8 +75,7 @@ class DefaultController extends Controller
                     if (file_exists($path)) {
                         throw new HttpException(409, 'Invalid hash');
                     }
-                }
-                else {
+                } else {
                     $path = $this->get('kernel')->getRootDir().'/../files/input/'.$conversion->getHash().'/';
                 }
 
@@ -128,28 +124,46 @@ class DefaultController extends Controller
      * @Route("/{_locale}/{hash}", name="output", requirements={ "_locale" = "en|es" }, options={ "expose" = true })
      * @Template()
      */
-    public function outputAction($hash)
+    public function outputAction(Request $request, $hash)
     {
+        // get the entity manager
+        $em = $this->getDoctrine()
+                   ->getEntityManager();
+
         // get the conversion
-        $conversion = $this->getDoctrine()
-                           ->getEntityManager()
-                           ->getRepository('EcentinelaComiconvBundle:Conversion')
-                           ->findOneBy(array(
+        $conversion = $em->getRepository('EcentinelaComiconvBundle:Conversion')
+                         ->findOneBy(array(
                             'hash' => $hash
-                           ));
+                         ));
 
         // invalid conversion status, redirect to input
-        if (!$conversion || $conversion->getStatus() == 'uploading' || $conversion->getStatus() == 'removed')
-        {
+        if (!$conversion || $conversion->getStatus() == 'uploading' || $conversion->getStatus() == 'removed') {
             return $this->redirect(
                 $this->generateUrl('input')
             );
+        }
+
+        // update conversion email if parameter in request
+        if ($request->getMethod() == 'POST' && $request->request->has('email')) {
+            $conversion->setEmail(
+                $request->request->get('email')
+            );
+
+            $em->flush();
         }
 
         // render template
         return array(
             'conversion' => $conversion
         );
+    }
+
+    /**
+     * @Route("/download/{hash}", name="download")
+     */
+    public function downloadAction($hash)
+    {
+
     }
 
     /**

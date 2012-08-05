@@ -1,62 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Comic-Conversor</title>
+{% extends "EcentinelaComiconvBundle::layout.html.twig" %}
 
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Comic conversor between jpg, cbz, pdf, etc. files">
-        <meta name="author" content="Javier Martinez Fernandez">
+{% block stylesheets %}
+{% stylesheets output="output.min.css"
+    "@EcentinelaComiconvBundle/Resources/public/css/output.less"
+%}
+<link href="{{ asset_url }}" rel="stylesheet" media="screen" />
+{% endstylesheets %}
+{% endblock stylesheets %}
 
-        {% stylesheets output="output.min.css"
-            "@EcentinelaComiconvBundle/Resources/public/css/output.less"
-        %}
-        <link href="{{ asset_url }}" rel="stylesheet" media="screen" />
-        {% endstylesheets %}
+{% block javascripts %}
+{% javascripts output="output.min.js"
+    "bundles/fosjsrouting/js/router.js"
+    "bundles/bazingaexposetranslation/js/translation.js"
+    "@EcentinelaComiconvBundle/Resources/public/jquery.js"
+    "@EcentinelaComiconvBundle/Resources/public/canjs/can.jquery.js"
+    "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/bootstrap-tooltip.js"
+    "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/*.js"
+    "@EcentinelaComiconvBundle/Resources/public/js/output.coffee"
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
 
-        <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+<script type="text/javascript" src="{{ path("fos_js_routing_js", {"callback": "fos.Router.setData"}) }}"></script>
 
-        <link rel="shortcut icon" href="../assets/ico/favicon.ico">
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
-    </head>
+<script type="text/javascript" src="{{ url("bazinga_exposetranslation_js") }}"></script>
 
-    <body id="body">
-        <a href="https://github.com/ecentinela/comiconv"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="{{ "output.form_me" }}"></a>
+<script type="text/javascript">HASH = '{{ conversion.hash }}'</script>
+{% endblock javascripts %}
 
-        <div class="navbar">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="brand" href="{{ path("input") }}">Comic Conversor</a>
+{% block body %}
+<a href="https://github.com/ecentinela/comiconv" id="github"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="{{ "output.form_me" }}"></a>
 
-                    <div class="nav-collapse">
-                        <ul class="nav">
-                            <li><a href="{{ path("about") }}">{{ "output.about" | trans }}</a></li>
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="{{ path("input") }}">Comic Conversor</a>
 
-                            <li><a href="{{ path("contact") }}">{{ "output.contact" | trans }}</a></li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li><a href="{{ path("about") }}">{{ "output.about" | trans }}</a></li>
+
+                    <li><a href="{{ path("contact") }}">{{ "output.contact" | trans }}</a></li>
+                </ul>
             </div>
         </div>
+    </div>
+</div>
 
-        <noscript id="requirement-error">
-            <h3>{{ "output.enable_javascript" | trans }}</h3>
-        </noscript>
+<noscript id="requirement-error">
+    <h3>{{ "output.enable_javascript" | trans }}</h3>
+</noscript>
 
-        <div class="container well hide">
-            <h1>{{ "output.title" | trans }}</h1>
+<div class="container well hide">
+    <h1>{{ "output.title" | trans }}</h1>
 
-            <p>{{ "output.description" | trans | raw }}</p>
+    <p>{{ "output.description" | trans | raw }}</p>
 
-            <div id="download">
-                <p>Your download link will appear here</p>
-            </div>
+    <div id="download">
+        <a href="{{ path("download", { hash: conversion.hash })}}" class="btn btn-success{% if conversion.status != "converted" %} hide{% endif %}">
+            <i class="icon-file icon-white"></i>
+            {{ "output.click_to_download" | trans({ "%size%": 100 })}}
+        </a>
 
+        <div>
+            <p{% if conversion.status == "converted" %} class="hide"{% endif %}>{{ "output.download_link_appear_here" | trans }}</p>
+            <small>{{ "output.check" | trans({ "%seconds%": 10 }) | raw }}</small>
+        </div>
+    </div>
+
+    {% if not conversion.email %}
+        <div id="notice">
             <hr />
 
             <form class="form-inline">
@@ -67,24 +80,9 @@
                     <input type="email" class="input-large" placeholder="Email" />
                 </div>
 
-                <button class="btn btn-primary">Send</button>
+                <button class="btn btn-primary">{{ "output.send" | trans }}</button>
             </form>
         </div>
-
-        {% javascripts output="output.min.js"
-            "bundles/fosjsrouting/js/router.js"
-            "bundles/bazingaexposetranslation/js/translation.js"
-            "@EcentinelaComiconvBundle/Resources/public/jquery.js"
-            "@EcentinelaComiconvBundle/Resources/public/canjs/can.jquery.js"
-            "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/bootstrap-tooltip.js"
-            "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/*.js"
-            "@EcentinelaComiconvBundle/Resources/public/js/output.coffee"
-        %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-
-        <script type="text/javascript" src="{{ path("fos_js_routing_js", {"callback": "fos.Router.setData"}) }}"></script>
-
-        <script type="text/javascript" src="{{ url("bazinga_exposetranslation_js") }}"></script>
-    </body>
-</html>
+    {% endif %}
+</div>
+{% endblock body %}

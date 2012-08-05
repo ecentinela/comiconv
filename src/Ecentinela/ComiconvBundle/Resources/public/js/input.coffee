@@ -180,7 +180,7 @@ Input = can.Control
                         $node = @nodeForFile file
 
                         # set the progress bar position
-                        @progress.removeClass('hide').addClass('in').css $node.offset()
+                        @progress.width(0).removeClass('hide').addClass('in').css $node.offset()
 
                         # add the node class
                         $node.addClass 'uploading'

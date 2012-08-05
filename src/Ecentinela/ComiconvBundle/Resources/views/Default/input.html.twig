@@ -1,151 +1,135 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <title>Comic-Conversor</title>
+{% extends "EcentinelaComiconvBundle::layout.html.twig" %}
 
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Comic conversor between jpg, cbz, pdf, etc. files">
-        <meta name="author" content="Javier Martinez Fernandez">
+{% block stylesheets %}
+{% stylesheets output="input.min.css"
+    "@EcentinelaComiconvBundle/Resources/public/css/input.less"
+%}
+<link href="{{ asset_url }}" rel="stylesheet" media="screen" />
+{% endstylesheets %}
+{% endblock stylesheets %}
 
-        {% stylesheets output="input.min.css"
-            "@EcentinelaComiconvBundle/Resources/public/css/input.less"
-        %}
-        <link href="{{ asset_url }}" rel="stylesheet" media="screen" />
-        {% endstylesheets %}
+{% block javascripts %}
+{% javascripts output="input.min.js"
+    "bundles/fosjsrouting/js/router.js"
+    "bundles/bazingaexposetranslation/js/translation.js"
+    "@EcentinelaComiconvBundle/Resources/public/jquery.js"
+    "@EcentinelaComiconvBundle/Resources/public/canjs/can.jquery.js"
+    "@EcentinelaComiconvBundle/Resources/public/jquerypp/jquerypp.js"
+    "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/bootstrap-tooltip.js"
+    "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/bootstrap-transition.js"
+    "@EcentinelaComiconvBundle/Resources/public/plupload/js/plupload.full.js"
+    "@EcentinelaComiconvBundle/Resources/public/js/input.coffee"
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
 
-        <!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
+<script type="text/javascript" src="{{ path("fos_js_routing_js", {"callback": "fos.Router.setData"}) }}"></script>
 
-        <link rel="shortcut icon" href="../assets/ico/favicon.ico">
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
-        <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
-    </head>
+<script type="text/javascript" src="{{ url("bazinga_exposetranslation_js") }}"></script>
 
-    <body id="body">
-        <a href="https://github.com/ecentinela/comiconv"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="{{ "input.form_me" }}"></a>
+<script type="text/javascript">HASH = '{{ hash }}', MAX_FILE_SIZE = '{{ maxFileSize }}'</script>
+{% endblock javascripts %}
 
-        <div class="navbar">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="brand" href="{{ path("input") }}">Comic Conversor</a>
+{% block body %}
+<a href="https://github.com/ecentinela/comiconv" id="github"><img src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="{{ "input.form_me" }}"></a>
 
-                    <div class="nav-collapse">
-                        <ul class="nav">
-                            <li><a href="{{ path("about") }}">{{ "input.about" | trans }}</a></li>
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="{{ path("input") }}">Comic Conversor</a>
 
-                            <li><a href="{{ path("contact") }}">{{ "input.contact" | trans }}</a></li>
-                        </ul>
-                    </div>
-                </div>
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li><a href="{{ path("about") }}">{{ "input.about" | trans }}</a></li>
+
+                    <li><a href="{{ path("contact") }}">{{ "input.contact" | trans }}</a></li>
+                </ul>
             </div>
         </div>
+    </div>
+</div>
 
-        <noscript id="requirement-error">
-            <h3>{{ "input.enable_javascript" | trans }}</h3>
-        </noscript>
+<noscript id="requirement-error">
+    <h3>{{ "input.enable_javascript" | trans }}</h3>
+</noscript>
 
-        <div id="requirement-error" class="hide">
-            <h3>{{ "input.browser_not_upload" | trans }}</h3>
+<div id="requirement-error" class="hide">
+    <h3>{{ "input.browser_not_upload" | trans }}</h3>
+</div>
+
+<div id="progress" class="progress progress-striped progress-success active fade hide">
+    <div class="bar"></div>
+</div>
+
+<div class="container well hide">
+
+    <h1>{{ "input.title" | trans }}</h1>
+
+    <p>{{ "input.description" | trans | raw }}</p>
+
+    <div id="drop-area" class="row">
+
+        <div id="drop" class="span4">
+            <img src="{{ asset("bundles/ecentinelacomiconv/images/drop.png") }}" alt="drop" />
+
+            <a href="#" id="upload-link">{{ "input.drag_or_click_to_add" | trans }}</a>
         </div>
 
-        <div id="progress" class="progress progress-striped progress-success active fade hide">
-            <div class="bar"></div>
+        <div id="table" class="span5 offset1 fade">
+            <div id="fader"></div>
+
+            <table class="table table-striped table-bordered table-condensed">
+                <thead>
+                    <tr>
+                        <th>{{ "input.filename" | trans }}</th>
+                        <th>{{ "input.size" | trans }}</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td class="name"></td>
+                        <td class="size"></td>
+                        <td class="move">
+                            <i class="icon-move" rel="tooltip" title="{{ "input.drag_to_change" | trans }}"></i>
+                        </td>
+                        <td class="trash">
+                            <i class="icon-trash" rel="tooltip" title="{{ "input.click_to_remove" | trans }}"></i>
+                        </td>
+                        <td class="retry">
+                            <i class="icon-repeat icon-white" rel="tooltip" title="{{ "input.click_to_retry" | trans }}"></i>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <td colspan="5">
+                            <select id="format">
+                                <option value="cbz">{{ "input.convert_to_cbz" | trans }}</option>
+                                <option value="pdf">{{ "input.convert_to_pdf" | trans }}</option>
+                            </select>
+                            <button class="btn btn-primary pull-right">{{ "input.upload" | trans }}</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
 
-        <div class="container well hide">
+    </div>
 
-            <h1>{{ "input.title" | trans }}</h1>
+    <hr />
 
-            <p>{{ "input.description" | trans | raw }}</p>
+    <span class="label label-info">
+        <i class="icon-info-sign icon-white"></i>
+        {{ "input.drag_multiple_note" | trans }}
+    </span>
 
-            <div id="drop-area" class="row">
+    <br />
 
-                <div id="drop" class="span4">
-                    <img src="{{ asset("bundles/ecentinelacomiconv/images/drop.png") }}" alt="drop" />
-
-                    <a href="#" id="upload-link">{{ "input.drag_or_click_to_add" | trans }}</a>
-                </div>
-
-                <div id="table" class="span5 offset1 fade">
-                    <div id="fader"></div>
-
-                    <table class="table table-striped table-bordered table-condensed">
-                        <thead>
-                            <tr>
-                                <th>{{ "input.filename" | trans }}</th>
-                                <th>{{ "input.size" | trans }}</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td class="name"></td>
-                                <td class="size"></td>
-                                <td class="move">
-                                    <i class="icon-move" rel="tooltip" title="{{ "input.drag_to_change" | trans }}"></i>
-                                </td>
-                                <td class="trash">
-                                    <i class="icon-trash" rel="tooltip" title="{{ "input.click_to_remove" | trans }}"></i>
-                                </td>
-                                <td class="retry">
-                                    <i class="icon-repeat icon-white" rel="tooltip" title="{{ "input.click_to_retry" | trans }}"></i>
-                                </td>
-                            </tr>
-                        </tbody>
-
-                        <tfoot>
-                            <tr>
-                                <td colspan="5">
-                                    <select id="format">
-                                        <option value="cbz">{{ "input.convert_to_cbz" }}</option>
-                                        <option value="pdf">{{ "input.convert_to_pdf" }}</option>
-                                    </select>
-                                    <button class="btn btn-primary pull-right">{{ "input.upload" | trans }}</button>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-
-            </div>
-
-            <hr />
-
-            <span class="label label-info">
-                <i class="icon-info-sign icon-white"></i>
-                {{ "input.drag_multiple_note" | trans }}
-            </span>
-
-            <br />
-
-            <span class="label label-warning">
-                <i class="icon-info-sign icon-white"></i>
-                {{ "input.max_file_size" | trans({ "%max_file_size%": maxFileSize }) }}
-            </span>
-        </div>
-
-        {% javascripts output="input.min.js"
-            "bundles/fosjsrouting/js/router.js"
-            "bundles/bazingaexposetranslation/js/translation.js"
-            "@EcentinelaComiconvBundle/Resources/public/jquery.js"
-            "@EcentinelaComiconvBundle/Resources/public/canjs/can.jquery.js"
-            "@EcentinelaComiconvBundle/Resources/public/jquerypp/jquerypp.js"
-            "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/bootstrap-tooltip.js"
-            "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/bootstrap-transition.js"
-            "@EcentinelaComiconvBundle/Resources/public/plupload/js/plupload.full.js"
-            "@EcentinelaComiconvBundle/Resources/public/js/input.coffee"
-        %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-        {% endjavascripts %}
-
-        <script type="text/javascript" src="{{ path("fos_js_routing_js", {"callback": "fos.Router.setData"}) }}"></script>
-
-        <script type="text/javascript" src="{{ url("bazinga_exposetranslation_js") }}"></script>
-
-        <script type="text/javascript">HASH = '{{ hash }}', MAX_FILE_SIZE = '{{ maxFileSize }}'</script>
-    </body>
-</html>
+    <span class="label label-warning">
+        <i class="icon-info-sign icon-white"></i>
+        {{ "input.max_file_size" | trans({ "%max_file_size%": maxFileSize }) }}
+    </span>
+</div>
+{% endblock body %}
