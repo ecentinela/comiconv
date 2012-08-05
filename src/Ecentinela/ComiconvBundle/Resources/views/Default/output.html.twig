@@ -1,1 +1,90 @@
-Bye
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Comic-Conversor</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Comic conversor between jpg, cbz, pdf, etc. files">
+        <meta name="author" content="Javier Martinez Fernandez">
+
+        {% stylesheets output="output.min.css"
+            "@EcentinelaComiconvBundle/Resources/public/css/output.less"
+        %}
+        <link href="{{ asset_url }}" rel="stylesheet" media="screen" />
+        {% endstylesheets %}
+
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <link rel="shortcut icon" href="../assets/ico/favicon.ico">
+        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../assets/ico/apple-touch-icon-144-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+        <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+    </head>
+
+    <body id="body">
+        <a href="https://github.com/ecentinela/comiconv"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="{{ "output.form_me" }}"></a>
+
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="brand" href="{{ path("input") }}">Comic Conversor</a>
+
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li><a href="{{ path("about") }}">{{ "output.about" | trans }}</a></li>
+
+                            <li><a href="{{ path("contact") }}">{{ "output.contact" | trans }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <noscript id="requirement-error">
+            <h3>{{ "output.enable_javascript" | trans }}</h3>
+        </noscript>
+
+        <div class="container well hide">
+            <h1>{{ "output.title" | trans }}</h1>
+
+            <p>{{ "output.description" | trans | raw }}</p>
+
+            <div id="download">
+                <p>Your download link will appear here</p>
+            </div>
+
+            <hr />
+
+            <form class="form-inline">
+                <div class="input-prepend">
+                    <div class="add-on">
+                        <i class="icon-user"></i>
+                    </div>
+                    <input type="email" class="input-large" placeholder="Email" />
+                </div>
+
+                <button class="btn btn-primary">Send</button>
+            </form>
+        </div>
+
+        {% javascripts output="output.min.js"
+            "bundles/fosjsrouting/js/router.js"
+            "bundles/bazingaexposetranslation/js/translation.js"
+            "@EcentinelaComiconvBundle/Resources/public/jquery.js"
+            "@EcentinelaComiconvBundle/Resources/public/canjs/can.jquery.js"
+            "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/bootstrap-tooltip.js"
+            "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/*.js"
+            "@EcentinelaComiconvBundle/Resources/public/js/output.coffee"
+        %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+
+        <script type="text/javascript" src="{{ path("fos_js_routing_js", {"callback": "fos.Router.setData"}) }}"></script>
+
+        <script type="text/javascript" src="{{ url("bazinga_exposetranslation_js") }}"></script>
+    </body>
+</html>

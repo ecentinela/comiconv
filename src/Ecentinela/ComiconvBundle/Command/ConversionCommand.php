@@ -36,7 +36,7 @@ class ConversionCommand extends ContainerAwareCommand
         $qb->where('c.status = :status')
            ->setParameter('status', 'uploaded');
 
-        $qb->andWhere('c.retries < 5');
+        //$qb->andWhere('c.retries < 5');
 
         $qb->orderBy('c.created_at');
 
@@ -124,7 +124,7 @@ class ConversionCommand extends ContainerAwareCommand
             }
 
             // update conversion
-            $conversion->setStatus('converted');
+            //$conversion->setStatus('converted');
         } catch (\Exception $e) {
             // info message
             $output->writeLn('  Failed to convert: <error>'.$conversion->getId().'</error> - '.$e->getMessage());
@@ -136,7 +136,7 @@ class ConversionCommand extends ContainerAwareCommand
         }
 
         // remove the folder
-        $fs->remove($dstPath);
+        //$fs->remove($dstPath);
 
         // save conversion changes
         $this->getContainer()
@@ -222,22 +222,59 @@ class ConversionCommand extends ContainerAwareCommand
         if (!$tmp = $this->tempdir($path, $index)) {
             throw new \Exception('can not create tmp folder to extract pdf images');
         }
-
+$a = time();
         // create the image magick file
-        $pdf = new \Imagick(
+        $pdf = new \Imagick();
+
+        $pdf->setResolution(600, 600);
+
+        $pdf->readImage(
             $file->getPathname()
         );
 
+        $pdf->setImageFormat('jpg');
+
+        $pdf->setImageCompression(\imagick::COMPRESSION_LOSSLESSJPEG);
+
+        $pdf->setImageUnits(\imagick::RESOLUTION_PIXELSPERINCH);
+
+        $pdf->writeImages($tmp.'.jpg', true);
+echo time() - $a;echo "\n";
+exit;
         // info message
         $output->write('  Extracting file <info>'.$file->getFilename().'</info>... ');
 
         // extract images from pdf
         foreach ($pdf as $img) {
+        //while ($img2 = $pdf->current()) {
+            //$img = new \Imagick();
+
+            //$img->setResolution(600, 600);
+
+            //$img->addImage($img2);
+
+            //$img->setImageFormat('jpg');
+
+            //$img->setImageCompression(\imagick::COMPRESSION_LOSSLESSJPEG);
+
+            //$img->setImageCompressionQuality(100);
+
+            //$img->setImageUnits(\imagick::RESOLUTION_PIXELSPERINCH);
+
+            //$img->setImageResolution(2000, 2000);
+
             $img->writeImage("$path/$index.jpg");
 
+print_r($img->identifyImage());exit;
             $index++;
-        }
 
+            // if ($pdf->hasNextImage()) {
+            //     $pdf->next();
+            // } else {
+            //     break;
+            // }
+        }
+exit;
         // info message
         $output->writeLn('done!');
     }
@@ -277,6 +314,8 @@ class ConversionCommand extends ContainerAwareCommand
 
         // create the pdf
         $im = new \Imagick($paths);
+
+        $im->setImageFormat('pdf');
 
         $im->writeImages("$path.pdf", true);
 

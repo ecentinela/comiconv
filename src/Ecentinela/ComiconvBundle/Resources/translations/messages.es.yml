@@ -19,3 +19,4 @@ input:
     upload: Cargar!
     drag_multiple_note: Puedes cargar varios archivos cbz o pdf para unirlos en uno.
     max_file_size: El tamaño máximo de la subida es de %max_file_size%
+    form_me: Clóname en GitHub

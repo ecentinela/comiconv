@@ -73,6 +73,13 @@ class Conversion
     private $retries;
 
     /**
+     * @var integer $conversion_time
+     *
+     * @ORM\Column(name="conversion_time", type="integer", nullable=true)
+     */
+    private $conversion_time;
+
+    /**
      * @var datetime $created_at
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -256,6 +263,29 @@ class Conversion
     public function getRetries()
     {
         return $this->retries;
+    }
+
+    /**
+     * Set conversion_time
+     *
+     * @param integer $conversionTime
+     * @return Conversion
+     */
+    public function setConversionTime($conversionTime)
+    {
+        $this->conversion_time = $conversionTime;
+
+        return $this;
+    }
+
+    /**
+     * Get conversion_time
+     *
+     * @return int
+     */
+    public function getConversionTime()
+    {
+        return $this->conversion_time;
     }
 
     /**
