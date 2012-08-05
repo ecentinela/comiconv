@@ -36,7 +36,7 @@ class ConversionCommand extends ContainerAwareCommand
         $qb->where('c.status = :status')
            ->setParameter('status', 'uploaded');
 
-        //$qb->andWhere('c.retries < 5');
+        $qb->andWhere('c.retries < 5');
 
         $qb->orderBy('c.created_at');
 
@@ -72,8 +72,11 @@ class ConversionCommand extends ContainerAwareCommand
      */
     private function convert(OutputInterface $output, Conversion $conversion)
     {
+        // get container
+        $container = $this->getContainer();
+
         // get source and destination paths
-        $path = $this->getContainer()->get('kernel')->getRootDir();
+        $path = $container->get('kernel')->getRootDir();
         $srcPath = $path.'/../files/input/'.$conversion->getHash();
         $dstPath = $path.'/../files/output/'.$conversion->getHash();
 
@@ -125,6 +128,25 @@ class ConversionCommand extends ContainerAwareCommand
 
             // update conversion
             //$conversion->setStatus('converted');
+
+            // send email if conversion has it
+            if ($email = $conversion->getEmail()) {
+                $message = \Swift_Message::newInstance()
+                                         ->setSubject('Comiconv.com conversion complete')
+                                         ->setFrom('ecentinela@gmail.com')
+                                         ->setTo($email)
+                                         ->setBody(
+                                            $container->get('templating')->render('EcentinelaComiconvBundle:Default:email.txt.twig', array(
+                                                'conversion' => $conversion,
+                                                'url' => $container->get('router')->generate('output', array(
+                                                    'hash' => $conversion->getHash(),
+                                                    '_locale' => 'en'
+                                                ), true)
+                                            ))
+                                         );
+
+                $container->get('mailer')->send($message);
+            }
         } catch (\Exception $e) {
             // info message
             $output->writeLn('  Failed to convert: <error>'.$conversion->getId().'</error> - '.$e->getMessage());
