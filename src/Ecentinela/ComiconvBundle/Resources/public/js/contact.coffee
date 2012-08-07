@@ -5,7 +5,7 @@ Contact = can.Control
         e.preventDefault()
 
         @button.prop 'disabled', 'disabled'
-        alert @form.prop('action')
+
         $.post @form.prop('action'), email: @email.val(), text: @text.val(), =>
             @button.prop 'disabled', null
             @email.val ''
