@@ -32,4 +32,22 @@ output:
     download_link_appear_here: Your download link will appear here when available
     check: Check again in <strong>%seconds%</strong> seconds
     checking: Checking...
+    email: Email
     send: Send
+
+about:
+    about: About
+    contact: Contact
+    enable_javascript: You should enable javascript to work with this site.
+    fork_me: Fork me on GitHub
+
+contact:
+    about: About
+    contact: Contact
+    enable_javascript: You should enable javascript to work with this site.
+    fork_me: Fork me on GitHub
+    message: Drop me a line here with comments, bugs and enhacements you want to view on this site.
+    email: Email
+    text: Text
+    send: Send
+    thank_you: Thank you

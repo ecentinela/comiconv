@@ -32,4 +32,16 @@ output:
     download_link_appear_here: Tu enlace de descarga aparecerá aqui cuando esté disponible
     check: Se comprobará de nuevo en <strong>%seconds%</strong> segundos
     checking: Comprobando...
+    email: Email
     send: Enviar
+
+contact:
+    about: Acerca de
+    contact: Contacto
+    enable_javascript: Tienes que activar javascript para que esta web funcione.
+    fork_me: Clóname en Github
+    message: Escríbeme con algun comentario, errores o sugerencias que quieras ver en esta web.
+    email: Email
+    text: Texto
+    send: Enviar
+    thank_you: Gracias

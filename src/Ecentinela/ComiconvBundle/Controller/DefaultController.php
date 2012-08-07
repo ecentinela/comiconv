@@ -31,6 +31,94 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/{_locale}/about", name="about", requirements={ "_locale" = "en|es" })
+     * @Template()
+     */
+    public function aboutAction()
+    {
+        return array();
+    }
+
+    /**
+     * @Route("/{_locale}/contact", name="contact", requirements={ "_locale" = "en|es" })
+     * @Template()
+     */
+    public function contactAction(Request $request)
+    {
+        if ($request->getMethod() == 'POST') {
+            $message = \Swift_Message::newInstance()
+                                     ->setSubject('Comiconv contact')
+                                     ->setFrom(
+                                        $request->request->get('email')
+                                     )
+                                     ->setTo(
+                                        $this->container->getParameter('contact_email')
+                                     )
+                                     ->setBody(
+                                        $request->request->get('text')
+                                     );
+
+            if ($this->get('mailer')->send($message)) {
+                return new Response('sent');
+            } else {
+                throw new HttpException(500, 'Can not send email');
+            }
+        }
+
+        return array();
+    }
+
+    /**
+     * @Route("/{_locale}", name="input", requirements={ "_locale" = "en|es" })
+     * @Template()
+     */
+    public function inputAction()
+    {
+        return array(
+            'hash' => base_convert(sha1(uniqid(mt_rand(), TRUE)), 16, 36),
+            'maxFileSize' => trim(ini_get('upload_max_filesize'))
+        );
+    }
+
+    /**
+     * @Route("/{_locale}/{hash}", name="output", requirements={ "_locale" = "en|es" }, options={ "expose" = true })
+     * @Template()
+     */
+    public function outputAction(Request $request, $hash)
+    {
+        // get the entity manager
+        $em = $this->getDoctrine()
+                   ->getEntityManager();
+
+        // get the conversion
+        $conversion = $em->getRepository('EcentinelaComiconvBundle:Conversion')
+                         ->findOneBy(array(
+                            'hash' => $hash
+                         ));
+
+        // invalid conversion status, redirect to input
+        if (!$conversion || $conversion->getStatus() == 'uploading' || $conversion->getStatus() == 'removed') {
+            return $this->redirect(
+                $this->generateUrl('input')
+            );
+        }
+
+        // update conversion email if parameter in request
+        if ($request->getMethod() == 'POST' && $request->request->has('email')) {
+            $conversion->setEmail(
+                $request->request->get('email')
+            );
+
+            $em->flush();
+        }
+
+        // render template
+        return array(
+            'conversion' => $conversion
+        );
+    }
+
+    /**
      * @Route("/{_locale}/upload", name="upload", requirements={ "_locale" = "en|es" }, options={ "expose" = true })
      */
     public function uploadAction(Request $request)
@@ -109,78 +197,10 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}", name="input", requirements={ "_locale" = "en|es" })
-     * @Template()
-     */
-    public function inputAction()
-    {
-        return array(
-            'hash' => base_convert(sha1(uniqid(mt_rand(), TRUE)), 16, 36),
-            'maxFileSize' => trim(ini_get('upload_max_filesize'))
-        );
-    }
-
-    /**
-     * @Route("/{_locale}/{hash}", name="output", requirements={ "_locale" = "en|es" }, options={ "expose" = true })
-     * @Template()
-     */
-    public function outputAction(Request $request, $hash)
-    {
-        // get the entity manager
-        $em = $this->getDoctrine()
-                   ->getEntityManager();
-
-        // get the conversion
-        $conversion = $em->getRepository('EcentinelaComiconvBundle:Conversion')
-                         ->findOneBy(array(
-                            'hash' => $hash
-                         ));
-
-        // invalid conversion status, redirect to input
-        if (!$conversion || $conversion->getStatus() == 'uploading' || $conversion->getStatus() == 'removed') {
-            return $this->redirect(
-                $this->generateUrl('input')
-            );
-        }
-
-        // update conversion email if parameter in request
-        if ($request->getMethod() == 'POST' && $request->request->has('email')) {
-            $conversion->setEmail(
-                $request->request->get('email')
-            );
-
-            $em->flush();
-        }
-
-        // render template
-        return array(
-            'conversion' => $conversion
-        );
-    }
-
-    /**
      * @Route("/download/{hash}", name="download")
      */
     public function downloadAction($hash)
     {
 
-    }
-
-    /**
-     * @Route("/{_locale}/about", name="about", requirements={ "_locale" = "en|es" })
-     * @Template()
-     */
-    public function aboutAction()
-    {
-        return array();
-    }
-
-    /**
-     * @Route("/{_locale}/contact", name="contact", requirements={ "_locale" = "en|es" })
-     * @Template()
-     */
-    public function contactAction()
-    {
-        return array();
     }
 }

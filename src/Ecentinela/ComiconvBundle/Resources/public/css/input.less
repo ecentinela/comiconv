@@ -56,36 +56,14 @@
 @import "../bootstrap/less/utilities.less";
 
 // Comiconv
-html,
-body {
-    height: 100%;
-}
+@import "common.less";
 
-body {
-    overflow-x: hidden;
-    #gradient .vertical(#efefef, #ccc);
-
-    &.dragenter #drop-area #drop {
-        .opacity(100);
-    }
+body .dragenter #drop-area #drop {
+    .opacity(100);
 }
 
 br {
     margin-bottom: 5px;
-}
-
-.navbar-inner {
-    .border-radius(0);
-}
-
-#requirement-error {
-    text-align: center;
-}
-
-#github img {
-    position: absolute;
-    right: 0;
-    top: 0;
 }
 
 #progress {

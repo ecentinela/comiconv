@@ -2,7 +2,6 @@
 Output = can.Control
     # email form is sent
     'form submit': ($el, e) ->
-        console.log arguments
         # stop email submit
         e.preventDefault()
 
@@ -13,7 +12,7 @@ Output = can.Control
         @notice.remove()
 
         # store the email
-        $.post location.href, email: email
+        $.post $el.prop('action'), email: email
 
     # constructor
     init: ->
@@ -27,15 +26,8 @@ Output = can.Control
         # prepare check
         @prepareCheck()
 
-        # create tooltips
-        @createTooltips @element
-
         # show container
         @container.removeClass 'hide'
-
-    # create tooltips
-    createTooltips: ($node) ->
-        $node.find('[rel=tooltip]').tooltip()
 
     # prepare the conversion check
     prepareCheck: ->
