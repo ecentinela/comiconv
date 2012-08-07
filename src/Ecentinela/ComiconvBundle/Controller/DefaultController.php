@@ -31,15 +31,6 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/about", name="about", requirements={ "_locale" = "en|es" })
-     * @Template()
-     */
-    public function aboutAction()
-    {
-        return array();
-    }
-
-    /**
      * @Route("/{_locale}/contact", name="contact", requirements={ "_locale" = "en|es" })
      * @Template()
      */
