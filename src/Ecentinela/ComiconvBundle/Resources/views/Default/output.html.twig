@@ -35,7 +35,7 @@
     <div id="download">
         <a href="{{ path("download", { hash: conversion.hash })}}" class="btn btn-success{% if conversion.status != "converted" %} hide{% endif %}">
             <i class="icon-file icon-white"></i>
-            {{ "output.click_to_download" | trans({ "%size%": (file.size / 1024 / 1024) | number_format(2) })}}
+            {{ "output.click_to_download" | trans({ "%size%": file ? (file.size / 1024 / 1024) | number_format(2) : 0 })}}
         </a>
 
         <div{% if conversion.status == "converted" %} class="hide"{% endif %}>

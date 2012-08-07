@@ -105,9 +105,8 @@ class DefaultController extends Controller
         }
 
         // get the file (if exists)
-        $file = new File(
-            $this->get('kernel')->getRootDir().'/../files/output/'.$conversion->getHash().'.'.$conversion->getFormat()
-        );
+        $path = $this->get('kernel')->getRootDir().'/../files/output/'.$conversion->getHash().'.'.$conversion->getFormat();
+        $file = file_exists($path) ? new File($path) : null;
 
         // render template
         return array(
