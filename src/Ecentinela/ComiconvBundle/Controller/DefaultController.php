@@ -5,6 +5,7 @@ namespace Ecentinela\ComiconvBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpFoundation\Response,
+    Symfony\Component\HttpFoundation\File\File,
     Symfony\Component\HttpKernel\Exception\HttpException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
@@ -103,14 +104,20 @@ class DefaultController extends Controller
             $em->flush();
         }
 
+        // get the file (if exists)
+        $file = new File(
+            $this->get('kernel')->getRootDir().'/../files/output/'.$conversion->getHash().'.'.$conversion->getFormat()
+        );
+
         // render template
         return array(
-            'conversion' => $conversion
+            'conversion' => $conversion,
+            'file' => $file
         );
     }
 
     /**
-     * @Route("/{_locale}/upload", name="upload", requirements={ "_locale" = "en|es" }, options={ "expose" = true })
+     * @Route("/upload", name="upload", options={ "expose" = true })
      */
     public function uploadAction(Request $request)
     {
@@ -192,6 +199,33 @@ class DefaultController extends Controller
      */
     public function downloadAction($hash)
     {
+        // get the entity manager
+        $em = $this->getDoctrine()
+                   ->getEntityManager();
 
+        // get the conversion
+        $conversion = $em->getRepository('EcentinelaComiconvBundle:Conversion')
+                         ->findOneBy(array(
+                            'hash' => $hash
+                         ));
+
+        if (!$conversion) {
+            throw $this->createNotFoundException('Unable to find conversion.');
+        }
+
+        $file = new File(
+            $this->get('kernel')->getRootDir().'/../files/output/'.$conversion->getHash().'.'.$conversion->getFormat()
+        );
+
+        return new Response(
+            file_get_contents(
+                $file->getPathname()
+            ),
+            200,
+            array(
+                'Content-Type' => $file->getMimeType(),
+                'Content-Disposition' => 'attachment; filename="'.$hash.'.'.$file->getExtension().'"'
+            )
+        );
     }
 }

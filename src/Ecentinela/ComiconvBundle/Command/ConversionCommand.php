@@ -40,7 +40,7 @@ class ConversionCommand extends ContainerAwareCommand
 
         $qb->orderBy('c.created_at');
 
-        //while (true) {
+        while (true) {
             $conversion = $qb->getQuery()
                              ->getOneOrNullResult();
 
@@ -61,7 +61,7 @@ class ConversionCommand extends ContainerAwareCommand
                 // sleep for 3 seconds
                 sleep(3);
             }
-        //}
+        }
     }
 
     /**
@@ -127,7 +127,7 @@ class ConversionCommand extends ContainerAwareCommand
             }
 
             // update conversion
-            //$conversion->setStatus('converted');
+            $conversion->setStatus('converted');
 
             // send email if conversion has it
             if ($email = $conversion->getEmail()) {
@@ -158,7 +158,7 @@ class ConversionCommand extends ContainerAwareCommand
         }
 
         // remove the folder
-        //$fs->remove($dstPath);
+        $fs->remove($dstPath);
 
         // save conversion changes
         $this->getContainer()

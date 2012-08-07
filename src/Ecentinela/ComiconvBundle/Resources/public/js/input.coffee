@@ -79,7 +79,7 @@ Input = can.Control
 
         # set the file on the uploader
         @uploader.files = [file]
-        console.log @uploader
+
         # initialize upload
         @uploader.start()
 
@@ -160,7 +160,7 @@ Input = can.Control
                 runtimes: 'html5,flash'
                 browse_button : 'upload-link'
                 drop_element: 'body'
-                url: Routing.generate('upload', _locale: ExposeTranslation.locale)
+                url: Routing.generate 'upload'
                 flash_swf_url: '/bundles/ecentinelacomiconv/Resources/public/plupload/js/plupload.flash.swf'
                 max_file_size: MAX_FILE_SIZE
                 # filters: [
@@ -180,7 +180,8 @@ Input = can.Control
                         $node = @nodeForFile file
 
                         # set the progress bar position
-                        @progress.width(0).removeClass('hide').addClass('in').css $node.offset()
+                        @progress.removeClass('hide').addClass('in').css $node.offset()
+                        @progressDiv.width 0
 
                         # add the node class
                         $node.addClass 'uploading'

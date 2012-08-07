@@ -47,9 +47,9 @@ Output = can.Control
     check: ->
         @downloadCheck.html ExposeTranslation.get 'output.checking'
 
-        $.get "#{location.href} #download a", (response) =>
+        $.get location.href, (response) =>
             # conversion is not ready
-            if $(response).hasClass 'hide'
+            if $(response).find('#download a').hasClass 'hide'
                 # set text again
                 @downloadCheck.html(ExposeTranslation.get 'output.check', seconds: 10)
 

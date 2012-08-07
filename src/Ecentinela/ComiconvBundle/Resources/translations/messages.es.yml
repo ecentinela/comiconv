@@ -28,7 +28,7 @@ output:
     title: La conversión está en cola!
     description: El trabajo de conversión es intensivo, por lo que puede tomar un tiempo. Puedes permanecer en esta página esperando a que aparezca el enlace de descarga o puedes escribir tu email en el formulario inferior y te lo enviaremos cuando la conversión haya acabado.
     fork_me: Clóname en GitHub
-    click_to_download: Pincha aquí para descargar el archivo (%size%)
+    click_to_download: Pincha aquí para descargar el archivo (%size%mb)
     download_link_appear_here: Tu enlace de descarga aparecerá aqui cuando esté disponible
     check: Se comprobará de nuevo en <strong>%seconds%</strong> segundos
     checking: Comprobando...
