@@ -42,7 +42,43 @@ class ConversionCommandTest extends WebTestCase
 
         `php $root/console ecentinela:comiconv:process $id`;
 
-        // test results
+        // check sizes
+        $srcPath = __DIR__.'/../Assets/cbz.cbz';
+        $dstPath = $root.'/../files/output/'.$conversion->getHash().'.cbz';
+
+        $this->assertEquals(
+            filesize($srcPath),
+            filesize($dstPath)
+        );
+
+        // check files
+        $srcTmpPath = $this->tempdir();
+        $dstTmpPath = $this->tempdir();
+
+        $zip = new \ZipArchive();
+        $zip->open($srcPath);
+        $zip->extractTo($srcTmpPath);
+        $zip->close();
+
+        $zip = new \ZipArchive();
+        $zip->open($dstPath);
+        $zip->extractTo($dstTmpPath);
+        $zip->close();
+
+        $srcFiles = glob($srcTmpPath.'/*');
+        $dstFiles = glob($dstTmpPath.'/*');
+
+        $this->assertEquals(
+            count($srcFiles),
+            count($dstFiles)
+        );
+
+        for ($i = 0; $i < count($srcFiles); $i ++) {
+            $this->assertEquals(
+                file_get_contents($srcFiles[$i]),
+                file_get_contents($dstFiles[$i])
+            );
+        }
     }
 
     /**
@@ -50,6 +86,7 @@ class ConversionCommandTest extends WebTestCase
      */
     public function testPdf()
     {
+        return;
         // create the conversion
         $conversion = $this->createConversion('pdf');
 
@@ -70,6 +107,9 @@ class ConversionCommandTest extends WebTestCase
      */
     private function createConversion($format)
     {
+        // extension
+        $extension = $format == 'pdf' ?: 'zip';
+
         // hash
         $hash = base_convert(sha1(uniqid(mt_rand(), TRUE)), 16, 36);
 
@@ -80,7 +120,7 @@ class ConversionCommandTest extends WebTestCase
         $fs = new Filesystem();
         $fs->copy(
             __DIR__.'/../Assets/'.$format.'.'.$format,
-            $root.'/../files/input/'.$hash.'/1.'.$format
+            $root.'/../files/input/'.$hash.'/1.'.$extension
         );
 
         // create the conversion
@@ -102,5 +142,32 @@ class ConversionCommandTest extends WebTestCase
         $this->em->flush();
 
         return $conversion;
+    }
+
+    /**
+     * Creates a temporary directory.
+     *
+     * @return string The temp directory path.
+     */
+    private function tempdir()
+    {
+        // create temp file
+        $tempfile = tempnam(
+            sys_get_temp_dir(),
+            'conversion'
+        );
+
+        // remove the file
+        if (file_exists($tempfile)) {
+            unlink($tempfile);
+        }
+
+        // create a directory with previous temp file name
+        mkdir($tempfile);
+
+        // check the folder has been created
+        if (is_dir($tempfile)) {
+            return $tempfile;
+        }
     }
 }
