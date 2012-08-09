@@ -5,6 +5,7 @@ namespace Ecentinela\ComiconvBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand,
     Symfony\Component\Console\Input\InputInterface,
     Symfony\Component\Console\Output\OutputInterface,
+    Symfony\Component\Console\Input\InputArgument,
     Symfony\Component\Filesystem\Filesystem,
     Symfony\Component\Finder\Finder,
     Symfony\Component\Finder\SplFileInfo;
@@ -19,7 +20,8 @@ class ConversionCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('ecentinela:comiconv:process')
-             ->setDescription('Process prepared conversions');
+             ->setDescription('Process given conversion')
+             ->addArgument('id', InputArgument::REQUIRED, 'Conversion id');
     }
 
     /**
@@ -27,41 +29,17 @@ class ConversionCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // create a query builder to get pending conversions
-        $qb = $this->getContainer()
-                   ->get('doctrine')
-                   ->getRepository('EcentinelaComiconvBundle:Conversion')
-                   ->createQueryBuilder('c');
+        // get the conversion id
+        $id = $input->getArgument('id');
 
-        $qb->where('c.status = :status')
-           ->setParameter('status', 'uploaded');
+        // get the conversion to process
+        $conversion = $this->getContainer()
+                           ->get('doctrine')
+                           ->getRepository('EcentinelaComiconvBundle:Conversion')
+                           ->find($id);
 
-        $qb->andWhere('c.retries < 5');
-
-        $qb->orderBy('c.created_at');
-
-        while (true) {
-            $conversion = $qb->getQuery()
-                             ->getOneOrNullResult();
-
-            if ($conversion) {
-                // info message
-                $output->writeLn('Found conversion <info>'.$conversion->getId().'</info>...');
-
-                // execute the conversion
-                $this->convert($output, $conversion);
-
-                // info message
-                $output->writeLn('done!');
-            }
-            else {
-                // info message
-                $output->writeln('No jobs found, sleeping three seconds');
-
-                // sleep for 3 seconds
-                sleep(3);
-            }
-        }
+        // execute the conversion
+        $this->process($output, $conversion);
     }
 
     /**
@@ -70,7 +48,7 @@ class ConversionCommand extends ContainerAwareCommand
      * @param OutputInterface $output     The console output.
      * @param Conversion      $conversion The conversion.
      */
-    private function convert(OutputInterface $output, Conversion $conversion)
+    private function process(OutputInterface $output, Conversion $conversion)
     {
         // get container
         $container = $this->getContainer();
@@ -96,6 +74,9 @@ class ConversionCommand extends ContainerAwareCommand
         $index = 1;
 
         try {
+            // start time
+            $time = microtime(true);
+
             // convert the source files to jpg images
             foreach ($files as $file) {
                 switch ($file->getExtension()) {
@@ -129,6 +110,10 @@ class ConversionCommand extends ContainerAwareCommand
             // update conversion
             $conversion->setStatus('converted');
 
+            $conversion->setConversionTime(
+                microtime(true) - $time
+            );
+
             // send email if conversion has it
             if ($email = $conversion->getEmail()) {
                 $message = \Swift_Message::newInstance()
@@ -136,13 +121,14 @@ class ConversionCommand extends ContainerAwareCommand
                                          ->setFrom('ecentinela@gmail.com')
                                          ->setTo($email)
                                          ->setBody(
-                                            $container->get('templating')->render('EcentinelaComiconvBundle:Default:email.txt.twig', array(
-                                                'conversion' => $conversion,
-                                                'url' => $container->get('router')->generate('output', array(
-                                                    'hash' => $conversion->getHash(),
-                                                    '_locale' => 'en'
-                                                ), true)
-                                            ))
+                                            $container->get('templating')
+                                                      ->render('EcentinelaComiconvBundle:Default:email.txt.twig', array(
+                                                        'conversion' => $conversion,
+                                                        'url' => $container->get('router')->generate('output', array(
+                                                            'hash' => $conversion->getHash(),
+                                                            '_locale' => 'en'
+                                                        ), true)
+                                                      ))
                                          );
 
                 $container->get('mailer')->send($message);
@@ -244,11 +230,14 @@ class ConversionCommand extends ContainerAwareCommand
         if (!$tmp = $this->tempdir($path, $index)) {
             throw new \Exception('can not create tmp folder to extract pdf images');
         }
-$a = time();
+
+        // info message
+        $output->write('  Extracting file <info>'.$file->getFilename().'</info>... ');
+
         // create the image magick file
         $pdf = new \Imagick();
 
-        $pdf->setResolution(600, 600);
+        $pdf->setResolution(300, 450);
 
         $pdf->readImage(
             $file->getPathname()
@@ -256,47 +245,17 @@ $a = time();
 
         $pdf->setImageFormat('jpg');
 
-        $pdf->setImageCompression(\imagick::COMPRESSION_LOSSLESSJPEG);
+        $pdf->setImageCompression(\imagick::COMPRESSION_JPEG);
 
         $pdf->setImageUnits(\imagick::RESOLUTION_PIXELSPERINCH);
 
-        $pdf->writeImages($tmp.'.jpg', true);
-echo time() - $a;echo "\n";
-exit;
-        // info message
-        $output->write('  Extracting file <info>'.$file->getFilename().'</info>... ');
-
         // extract images from pdf
         foreach ($pdf as $img) {
-        //while ($img2 = $pdf->current()) {
-            //$img = new \Imagick();
-
-            //$img->setResolution(600, 600);
-
-            //$img->addImage($img2);
-
-            //$img->setImageFormat('jpg');
-
-            //$img->setImageCompression(\imagick::COMPRESSION_LOSSLESSJPEG);
-
-            //$img->setImageCompressionQuality(100);
-
-            //$img->setImageUnits(\imagick::RESOLUTION_PIXELSPERINCH);
-
-            //$img->setImageResolution(2000, 2000);
-
             $img->writeImage("$path/$index.jpg");
 
-print_r($img->identifyImage());exit;
             $index++;
-
-            // if ($pdf->hasNextImage()) {
-            //     $pdf->next();
-            // } else {
-            //     break;
-            // }
         }
-exit;
+
         // info message
         $output->writeLn('done!');
     }
