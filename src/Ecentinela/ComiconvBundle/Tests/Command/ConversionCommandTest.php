@@ -7,6 +7,9 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase,
 
 use Ecentinela\ComiconvBundle\Entity\Conversion;
 
+/**
+ * Test conversion command.
+ */
 class ConversionCommandTest extends WebTestCase
 {
     /**
@@ -37,48 +40,18 @@ class ConversionCommandTest extends WebTestCase
         $conversion = $this->createConversion('cbz');
 
         // execute command
-        $root = static::$kernel->getRootDir();
-        $id = $conversion->getId();
-
-        `php $root/console ecentinela:comiconv:process $id`;
-
-        // check sizes
-        $srcPath = __DIR__.'/../Assets/cbz.cbz';
-        $dstPath = $root.'/../files/output/'.$conversion->getHash().'.cbz';
-
-        $this->assertEquals(
-            filesize($srcPath),
-            filesize($dstPath)
-        );
+        $this->executeConversionCommand($conversion);
 
         // check files
-        $srcTmpPath = $this->tempdir();
-        $dstTmpPath = $this->tempdir();
-
-        $zip = new \ZipArchive();
-        $zip->open($srcPath);
-        $zip->extractTo($srcTmpPath);
-        $zip->close();
-
-        $zip = new \ZipArchive();
-        $zip->open($dstPath);
-        $zip->extractTo($dstTmpPath);
-        $zip->close();
-
-        $srcFiles = glob($srcTmpPath.'/*');
-        $dstFiles = glob($dstTmpPath.'/*');
-
-        $this->assertEquals(
-            count($srcFiles),
-            count($dstFiles)
+        $src = $this->extractImagesFromCbz(
+            __DIR__.'/../Assets/cbz.cbz'
         );
 
-        for ($i = 0; $i < count($srcFiles); $i ++) {
-            $this->assertEquals(
-                file_get_contents($srcFiles[$i]),
-                file_get_contents($dstFiles[$i])
-            );
-        }
+        $dst = $this->extractImagesFromCbz(
+            __DIR__.'/../../../../../files/output/'.$conversion->getHash().'.cbz'
+        );
+
+        $this->compareFilesOn($src, $dst);
     }
 
     /**
@@ -86,17 +59,22 @@ class ConversionCommandTest extends WebTestCase
      */
     public function testPdf()
     {
-        return;
         // create the conversion
         $conversion = $this->createConversion('pdf');
 
         // execute command
-        $root = static::$kernel->getRootDir();
-        $id = $conversion->getId();
+        $this->executeConversionCommand($conversion);
 
-        `php $root/console ecentinela:comiconv:process $id`;
+        // check files
+        $src = $this->extractImagesFromPdf(
+            __DIR__.'/../Assets/pdf.pdf'
+        );
 
-        // test results
+        $dst = $this->extractImagesFromPdf(
+            __DIR__.'/../../../../../files/output/'.$conversion->getHash().'.pdf'
+        );
+
+        $this->compareFilesOn($src, $dst);
     }
 
     /**
@@ -108,7 +86,7 @@ class ConversionCommandTest extends WebTestCase
     private function createConversion($format)
     {
         // extension
-        $extension = $format == 'pdf' ?: 'zip';
+        $extension = $format == 'pdf' ? 'pdf' : 'zip';
 
         // hash
         $hash = base_convert(sha1(uniqid(mt_rand(), TRUE)), 16, 36);
@@ -142,6 +120,99 @@ class ConversionCommandTest extends WebTestCase
         $this->em->flush();
 
         return $conversion;
+    }
+
+    /**
+     * Execute the conversion command for the given conversion object.
+     *
+     * @param Conversion $conversion The conversion object.
+     */
+    private function executeConversionCommand(Conversion $conversion)
+    {
+        $root = static::$kernel->getRootDir();
+        $id = $conversion->getId();
+
+        `php $root/console ecentinela:comiconv:process $id`;
+    }
+
+    /**
+     * Extract the images on the given cbz file.
+     *
+     * @param  string $path The path where the cbz file is.
+     * @return string       The path where images are extracted.
+     */
+    private function extractImagesFromCbz($path)
+    {
+        // get a temp directory
+        $tmp = $this->tempdir();
+
+        // extract the images
+        $zip = new \ZipArchive();
+        $zip->open($path);
+        $zip->extractTo($tmp);
+        $zip->close();
+
+        // return the extracted path
+        return $tmp;
+    }
+
+    /**
+     * Extract the images on the given pdf file.
+     *
+     * @param  string $path The path where the pdf file is.
+     * @return string       The path where images are extracted.
+     */
+    private function extractImagesFromPdf($path)
+    {
+        // get a temp directory
+        $tmp = $this->tempdir();
+
+        // extract the images
+        $pdf = new \Imagick();
+
+        $pdf->setResolution(300, 450);
+
+        $pdf->readImage($path);
+
+        $pdf->setImageFormat('jpg');
+
+        $pdf->setImageCompression(\imagick::COMPRESSION_JPEG);
+
+        $pdf->setImageUnits(\imagick::RESOLUTION_PIXELSPERINCH);
+
+        foreach ($pdf as $i => $img) {
+            $index = $i + 1;
+            $img->writeImage("$tmp/$index.jpg");
+        }
+
+        // return the extracted path
+        return $tmp;
+    }
+
+    /**
+     * Compare files on the given directories.
+     *
+     * @param string
+     * @param string
+     */
+    private function compareFilesOn($srcTmpPath, $dstTmpPath)
+    {
+        $srcFiles = glob($srcTmpPath.'/*');
+        $dstFiles = glob($dstTmpPath.'/*');
+
+        $this->assertCount(3, $srcFiles);
+
+        $this->assertEquals(
+            count($srcFiles),
+            count($dstFiles)
+        );
+
+        for ($i = 0; $i < count($srcFiles); $i ++) {
+            $this->assertEquals(
+                file_get_contents($srcFiles[$i]),
+                file_get_contents($dstFiles[$i])
+            );
+        }
     }
 
     /**
