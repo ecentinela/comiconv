@@ -1,7 +1,7 @@
 {% extends "EcentinelaComiconvBundle::layout.html.twig" %}
 
 {% block stylesheets %}
-{% stylesheets output="input.min.css"
+{% stylesheets output="css/input.min.css" filter="yui_css"
     "@EcentinelaComiconvBundle/Resources/public/css/input.less"
 %}
 <link href="{{ asset_url }}" rel="stylesheet" media="screen" />
@@ -9,7 +9,7 @@
 {% endblock stylesheets %}
 
 {% block javascripts %}
-{% javascripts output="input.min.js"
+{% javascripts output="js/input.min.js" filter="closure"
     "bundles/fosjsrouting/js/router.js"
     "bundles/bazingaexposetranslation/js/translation.js"
     "@EcentinelaComiconvBundle/Resources/public/jquery.js"

@@ -1,7 +1,7 @@
 {% extends "EcentinelaComiconvBundle::layout.html.twig" %}
 
 {% block stylesheets %}
-{% stylesheets output="contact.min.css"
+{% stylesheets output="css/contact.min.css" filter="yui_css"
     "@EcentinelaComiconvBundle/Resources/public/css/contact.less"
 %}
 <link href="{{ asset_url }}" rel="stylesheet" media="screen" />
@@ -9,7 +9,7 @@
 {% endblock stylesheets %}
 
 {% block javascripts %}
-{% javascripts output="contact.min.js"
+{% javascripts output="js/contact.min.js" filter="closure"
     "@EcentinelaComiconvBundle/Resources/public/jquery.js"
     "@EcentinelaComiconvBundle/Resources/public/canjs/can.jquery.js"
     "@EcentinelaComiconvBundle/Resources/public/js/contact.coffee"
