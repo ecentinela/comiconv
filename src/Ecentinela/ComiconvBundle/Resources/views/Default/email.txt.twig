@@ -1,5 +1,5 @@
-The comic conversion you were awaiting has been complete.
+{{ "email.conversion_complete" | trans }}
 
-Here you have the link to download the resulting file.
+{{ "email.conversion_link" | trans({ "%datetime%": conversion.removedAt | date("Y-m-d H:i:s") }) }}
 
 {{ url }}

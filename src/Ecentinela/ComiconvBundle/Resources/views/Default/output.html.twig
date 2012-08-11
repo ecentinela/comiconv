@@ -33,15 +33,21 @@
     <p>{{ "output.description" | trans | raw }}</p>
 
     <div id="download">
-        <a href="{{ path("download", { hash: conversion.hash })}}" class="btn btn-success{% if conversion.status != "converted" %} hide{% endif %}">
-            <i class="icon-file icon-white"></i>
-            {{ "output.click_to_download" | trans({ "%size%": file ? (file.size / 1024 / 1024) | number_format(2) : 0 })}}
-        </a>
+        {% if conversion.status == "converted" %}
+            <a href="{{ path("download", { hash: conversion.hash })}}" class="btn btn-success">
+                <i class="icon-file icon-white"></i>
+                {{ "output.click_to_download" | trans({ "%size%": file ? (file.size / 1024 / 1024) | number_format(2) : 0 })}}
+            </a>
 
-        <div{% if conversion.status == "converted" %} class="hide"{% endif %}>
-            <p>{{ "output.download_link_appear_here" | trans }}</p>
-            <small>{{ "output.check" | trans({ "%seconds%": 10 }) | raw }}</small>
-        </div>
+            <br /><br />
+
+            <p>{{ "output.available_until" | trans({ "%datetime%": conversion.removedAt | date("Y-m-d H:i:s") }) }}</p>
+        {% else %}
+            <div>
+                <p>{{ "output.download_link_appear_here" | trans }}</p>
+                <small>{{ "output.check" | trans({ "%seconds%": 10 }) | raw }}</small>
+            </div>
+        {% endif %}
     </div>
 
     {% if not conversion.email %}

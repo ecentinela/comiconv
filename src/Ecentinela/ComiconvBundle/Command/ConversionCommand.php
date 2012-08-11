@@ -133,7 +133,7 @@ class ConversionCommand extends ContainerAwareCommand
                                                       ->render('EcentinelaComiconvBundle:Default:email.txt.twig', array(
                                                         'conversion' => $conversion,
                                                         'url' => $container->get('router')->generate('output', array(
-                                                            'hash' => $conversion->getHash(),
+                                                            'conversion' => $conversion,
                                                             '_locale' => 'en'
                                                         ), true)
                                                       ))

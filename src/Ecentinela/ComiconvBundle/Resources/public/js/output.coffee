@@ -19,12 +19,11 @@ Output = can.Control
         # get elements
         @container = @element.find '.container'
         @notice = @element.find '#notice'
-        @downloadLink = @element.find '#download a'
-        @downloadText = @element.find '#download div'
-        @downloadCheck = @element.find '#download small'
+        @download = @element.find '#download'
+        @downloadCheck = @download.find 'small'
 
         # prepare check
-        @prepareCheck() if @downloadLink.hasClass 'hide'
+        @prepareCheck() if @downloadCheck.length
 
         # show container
         @container.removeClass 'hide'
@@ -48,23 +47,19 @@ Output = can.Control
         @downloadCheck.html ExposeTranslation.get 'output.checking'
 
         $.get location.href, (response) =>
-            $link = $(response).find '#download a'
+            $download = $(response).find '#download'
 
             # conversion is not ready
-            if $link.hasClass 'hide'
+            if $download.find('a').length
+                # replace content
+                @download.html $download.html()
+            # conversion is complete
+            else
                 # set text again
                 @downloadCheck.html(ExposeTranslation.get 'output.check', seconds: 10)
 
                 # prepare check again
                 @prepareCheck()
-            # conversion is complete
-            else
-                # replace link
-                @downloadLink.html $link.html()
-
-                # hide conversion text and show download link
-                @downloadText.hide()
-                @downloadLink.show()
 
 # initialize output controller on dom ready
 $ -> new Output 'body'
