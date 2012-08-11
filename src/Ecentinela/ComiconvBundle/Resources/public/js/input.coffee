@@ -70,18 +70,7 @@ Input = can.Control
 
     # click on the retry button
     '.icon-repeat click': ($el, e) ->
-        # get the file
-        file = $el.closest('tr').data 'file'
-
-        # reset the plupload
-        @uploader.destroy()
-        @uploader.init()
-
-        # set the file on the uploader
-        @uploader.files = [file]
-
-        # initialize upload
-        @uploader.start()
+        alert(ExposeTranslation.get 'input.reupload_single')
 
     # upload the files
     '.btn-primary click': ($el) ->
@@ -104,11 +93,7 @@ Input = can.Control
 
     # upload the files
     '.btn-warning click': ($el) ->
-        # disable button
-        $el.prop 'disabled', 'disabled'
-
-        # add failed files
-        @uploader.files = []
+        alert(ExposeTranslation.get 'input.reupload_multi')
 
     # constructor
     init: ->

@@ -17,6 +17,8 @@ input:
     convert_to_cbz: Convert to CBZ
     convert_to_pdf: Convert to PDF
     upload: Upload!
+    reupload_single: I'm sorry, but retry upload is not available yet
+    reupload_multi: I'm sorry, but retry upload is not available yet
     drag_multiple_note: You can drag multiple cbz or pdf files to join them in a single file.
     max_file_size: Max file size upload is %max_file_size%
     fork_me: Fork me on GitHub

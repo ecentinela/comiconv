@@ -17,6 +17,8 @@ input:
     convert_to_cbz: Convertir a CBZ
     convert_to_pdf: Convertir a PDF
     upload: Cargar!
+    reupload_single: Lo siento, pero el reintento de carga no está disponible aún
+    reupload_multi: Lo siento, pero el reintento de carga no está disponible aún
     drag_multiple_note: Puedes cargar varios archivos cbz o pdf para unirlos en uno.
     max_file_size: El tamaño máximo de la subida es de %max_file_size%
     fork_me: Clóname en GitHub
