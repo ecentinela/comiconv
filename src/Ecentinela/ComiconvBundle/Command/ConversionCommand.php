@@ -39,7 +39,11 @@ class ConversionCommand extends ContainerAwareCommand
                            ->find($id);
 
         // execute the conversion
-        $this->process($output, $conversion);
+        if ($conversion) {
+            $this->process($output, $conversion);
+        } else {
+            $output->writeLn("Conversion <error>$id</error> not found or not ready for conversion");
+        }
     }
 
     /**
@@ -112,6 +116,10 @@ class ConversionCommand extends ContainerAwareCommand
 
             $conversion->setConversionTime(
                 microtime(true) - $time
+            );
+
+            $conversion->setRemovedAt(
+                new \DateTime('+1day')
             );
 
             // send email if conversion has it

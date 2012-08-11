@@ -96,6 +96,13 @@ class Conversion
     private $updated_at;
 
     /**
+     * @var datetime $removed_at
+     *
+     * @ORM\Column(name="removed_at", type="datetime", nullable=true)
+     */
+    private $removed_at;
+
+    /**
      * Get id
      *
      * @return integer
@@ -332,5 +339,28 @@ class Conversion
     public function getUpdatedAt()
     {
         return $this->updated_at;
+    }
+
+    /**
+     * Set removed_at
+     *
+     * @param datetime $removedAt
+     * @return Conversion
+     */
+    public function setRemovedAt($removedAt)
+    {
+        $this->removed_at = $removedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get removed_at
+     *
+     * @return datetime
+     */
+    public function getRemovedAt()
+    {
+        return $this->removed_at;
     }
 }
