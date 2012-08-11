@@ -163,11 +163,11 @@ Input = can.Control
                 url: Routing.generate 'upload'
                 flash_swf_url: '/bundles/ecentinelacomiconv/Resources/public/plupload/js/plupload.flash.swf'
                 max_file_size: MAX_FILE_SIZE
-                # filters: [
-                #     { title: 'Comic files', extensions: 'cbz,zip' }
-                #     { title: 'Image files', extensions: 'jpg' }
-                #     { title: 'PDF files', extensions: 'pdf' }
-                # ]
+                filters: [
+                    { title: 'Comic files', extensions: 'cbz,zip' }
+                    { title: 'Image files', extensions: 'jpg' }
+                    { title: 'PDF files', extensions: 'pdf' }
+                ]
                 init:
                     FilesAdded: (up, files) =>
                         @addFile file for file in files
@@ -220,8 +220,13 @@ Input = can.Control
                         # get the node with the file
                         $node = @nodeForFile file
 
-                        # mark the node as error
-                        $node.addClass 'error'
+                        # if $node, it's an upload error
+                        if $node
+                            # mark the node as error
+                            $node.addClass 'error'
+                        # any other error (filter, etc.)
+                        else
+                            alert response.message
 
             @uploader.init()
 
