@@ -15,3 +15,7 @@ parameters:
     secret:            ThisTokenIsNotSoSecretChangeIt
 
     contact_email:
+
+    node:
+    node_paths:
+    coffee:
