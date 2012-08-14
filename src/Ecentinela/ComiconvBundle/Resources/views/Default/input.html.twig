@@ -9,7 +9,7 @@
 {% endblock stylesheets %}
 
 {% block javascripts %}
-{% javascripts output="js/input.min.js" filter="closure"
+{% javascripts output="js/input.min.js" filter="uglifyjs"
     "bundles/fosjsrouting/js/router.js"
     "bundles/bazingaexposetranslation/js/translation.js"
     "@EcentinelaComiconvBundle/Resources/public/jquery.js"
