@@ -7,3 +7,7 @@ bin/*
 build/
 vendor
 composer.phar
+composer.lock
+web/css/*
+web/js/*
+files/*
