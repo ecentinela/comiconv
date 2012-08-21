@@ -146,7 +146,7 @@ Input = can.Control
                 browse_button : 'upload-link'
                 drop_element: 'body'
                 url: Routing.generate 'upload'
-                flash_swf_url: '/bundles/ecentinelacomiconv/Resources/public/plupload/js/plupload.flash.swf'
+                flash_swf_url: '/bundles/ecentinelacomiconv/plupload/js/plupload.flash.swf'
                 max_file_size: MAX_FILE_SIZE
                 filters: [
                     { title: 'Comic files', extensions: 'cbz,zip' }
