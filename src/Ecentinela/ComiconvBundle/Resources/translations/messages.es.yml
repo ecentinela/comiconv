@@ -38,6 +38,12 @@ output:
     email: Email
     send: Enviar
 
+about:
+    about: Acerca de
+    contact: Contacto
+    enable_javascript: Tienes que activar javascript para que esta web funcione.
+    fork_me: Clóname en Github
+
 contact:
     about: Acerca de
     contact: Contacto
