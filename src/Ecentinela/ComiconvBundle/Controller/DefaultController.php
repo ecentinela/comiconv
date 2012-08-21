@@ -125,7 +125,7 @@ class DefaultController extends Controller
 
         // upload is ok
         if ($file->isValid()) {
-            if (preg_match('/(pdf|cbz|zip|jpg)/', $file->guessExtension())) {
+            if (preg_match('/(pdf|cbz|zip|jpg|jpeg)/', $file->guessExtension())) {
                 // get the entity manager and the repository
                 $em = $this->getDoctrine()->getEntityManager();
                 $repository = $em->getRepository('EcentinelaComiconvBundle:Conversion');

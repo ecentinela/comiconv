@@ -94,6 +94,7 @@ class ConversionCommand extends ContainerAwareCommand
                         break;
 
                     case 'jpg':
+                    case 'jpeg':
                         rename($file->getPathname(), "$dstPath/$index.jpg");
                         $index++;
                         break;
