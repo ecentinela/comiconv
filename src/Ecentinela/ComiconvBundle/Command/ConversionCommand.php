@@ -126,7 +126,9 @@ class ConversionCommand extends ContainerAwareCommand
             // send email if conversion has it
             if ($email = $conversion->getEmail()) {
                 $message = \Swift_Message::newInstance()
-                                         ->setSubject('Comiconv.com conversion complete')
+                                         ->setSubject(
+                                            $this->getContainer()->get('translator')->trans('email.subject')
+                                         )
                                          ->setFrom('no-reply@comiconv.com')
                                          ->setTo($email)
                                          ->setBody(

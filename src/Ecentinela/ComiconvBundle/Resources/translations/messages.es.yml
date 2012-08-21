@@ -50,5 +50,6 @@ contact:
     thank_you: Gracias
 
 email:
+    subject: Comiconv.com - conversión completa
     conversion_complete: La conversión del cómic que estabas esperando se ha completado.
     conversion_link: Aquí tienes el enlace de descarga. Estará disponible hasta %datetime%.

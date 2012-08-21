@@ -56,5 +56,6 @@ contact:
     thank_you: Thank you
 
 email:
+    subject: Comiconv.com - conversion complete
     conversion_complete: The comic conversion you were awaiting has been complete.
     conversion_link: Here you have the link to download the resulting file. It will be available until %datetime%.
