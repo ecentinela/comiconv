@@ -2,8 +2,6 @@ input:
     insert_before: Insertar %drag_filename% antes de %drop_filename%
     file_types: Ficheros de cómic (pdf, cbr, jpg)
     retry_all: Reintentar todos
-    about: Acerca de
-    contact: Contacto
     enable_javascript: Tienes que activar javascript para que esta web funcione.
     browser_not_upload: Tu navegador no soporta la subida de archivos.
     title: Conversor de cómics online
@@ -22,10 +20,16 @@ input:
     drag_multiple_note: Puedes cargar varios archivos cbz o pdf para unirlos en uno.
     max_file_size: El tamaño máximo de la subida es de %max_file_size%
     fork_me: Clóname en GitHub
+    thanks: Gracias por usar Comiconv
+    receive_comments: Me gustaría recibir comentarios, sugerencias y errores en el sitio.
+    feedback: Envíame feedback
+    contact_message: Algo de feedback acerca del sitio
+    email: Email (no es obligatorio)
+    text: Texto
+    close: Cerrar
+    send: Enviar
 
 output:
-    about: Acerca de
-    contact: Contacto
     enable_javascript: Tienes que activar javascript para que esta web funcione.
     title: La conversión está en cola!
     description: El trabajo de conversión es intensivo, por lo que puede tomar un tiempo. Puedes permanecer en esta página esperando a que aparezca el enlace de descarga o puedes escribir tu email en el formulario inferior y te lo enviaremos cuando la conversión haya acabado.
@@ -37,23 +41,6 @@ output:
     checking: Comprobando...
     email: Email
     send: Enviar
-
-about:
-    about: Acerca de
-    contact: Contacto
-    enable_javascript: Tienes que activar javascript para que esta web funcione.
-    fork_me: Clóname en Github
-
-contact:
-    about: Acerca de
-    contact: Contacto
-    enable_javascript: Tienes que activar javascript para que esta web funcione.
-    fork_me: Clóname en Github
-    message: Escríbeme con algun comentario, errores o sugerencias que quieras ver en esta web.
-    email: Email
-    text: Texto
-    send: Enviar
-    thank_you: Gracias
 
 email:
     subject: Comiconv.com - conversión completa

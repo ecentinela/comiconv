@@ -34,7 +34,7 @@
 
   <!-- Navbar
     ================================================== -->
-    <div class="navbar navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
           <a class="brand" href="../../docs/index.html">Bootstrap</a>
@@ -53,7 +53,9 @@
 </header>
 
 
-<div class="container">
+<div class="bs-docs-canvas">
+
+  <div class="container">
 
 
 
@@ -794,7 +796,50 @@
     </div><!--/span-->
   </div><!--/row-->
 </div>
+
 <br>
+
+<h4>Inline form in fluid row</h4>
+
+<div class="row-fluid">
+  <div class="span12">
+    <form class="form-inline">
+      <input type="text" class="span3" placeholder="Email">
+      <input type="password" class="span3" placeholder="Password">
+      <label class="checkbox">
+        <input type="checkbox"> Remember me
+      </label>
+      <button type="submit" class="btn">Sign in</button>
+    </form>
+  </div>
+</div>
+
+
+<br>
+
+
+<h4>Fluid textarea at .span12</h4>
+<div class="row-fluid">
+  <div class="span12">
+    <textarea class="span12"></textarea>
+  </div>
+</div>
+
+
+<br>
+
+
+<h4>Selects</h4>
+<form>
+  <select class="span4">
+    <option>Option</option>
+  </select>
+</form>
+
+
+<br>
+
+
 
 
 <!-- Dropdowns
@@ -988,6 +1033,7 @@
   </div>
 </div> <!-- /tabbable -->
 
+<br>
 
 
 <!-- Labels
@@ -1009,17 +1055,19 @@
     </form>
   </div><!--/span-->
   <div class="span4">
-
+    <button class="btn">Action <span class="badge">2</span></button>
+    <button class="btn">Action <span class="label">2</span></button>
   </div><!--/span-->
 </div><!--/row-->
 
+<br>
 
 
 <!-- Button groups
 ================================================== -->
 
 <div class="page-header">
-  <h1>Button groups</h1>
+  <h1>Buttons</h1>
 </div>
 
 <table class="table table-bordered">
@@ -1039,6 +1087,14 @@
     </tr>
   </tbody>
 </table>
+
+<h4>Mini buttons: text and icon</h4>
+<div class="btn-group">
+  <button class="btn btn-mini">Button text</button>
+  <button class="btn btn-mini"><i class="icon-cog"></i></button>
+</div>
+
+<br>
 
 
 
@@ -1096,6 +1152,7 @@
       </div>
     </footer>
 
+</div>
 
 
     <!-- Le javascript

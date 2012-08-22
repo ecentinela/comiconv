@@ -25,7 +25,7 @@
 // @import "../bootstrap/less/dropdowns.less";
 @import "../bootstrap/less/wells.less";
 @import "../bootstrap/less/component-animations.less";
-// @import "../bootstrap/less/close.less";
+@import "../bootstrap/less/close.less";
 
 // Components: Buttons & Alerts
 @import "../bootstrap/less/buttons.less";
@@ -40,9 +40,9 @@
 // @import "../bootstrap/less/pager.less";
 
 // Components: Popovers
-// @import "../bootstrap/less/modals.less";
+@import "../bootstrap/less/modals.less";
 @import "../bootstrap/less/tooltip.less";
-// @import "../bootstrap/less/popovers.less";
+@import "../bootstrap/less/popovers.less";
 
 // Components: Misc
 // @import "../bootstrap/less/thumbnails.less";
@@ -64,6 +64,10 @@ body .dragenter #drop-area #drop {
 
 br {
     margin-bottom: 5px;
+}
+
+.container {
+    position: relative;
 }
 
 #progress {
@@ -104,6 +108,40 @@ br {
         }
     }
 
+    #contact {
+        position: absolute;
+        right: 352px;
+        top: 24px;
+
+        img {
+            .square(80px);
+        }
+
+        .popover {
+            display: block;
+            left: 82px;
+            top: -40px;
+            width: 346px;
+            z-index: 0;
+        }
+
+        .popover-title {
+            font-weight: bold;
+        }
+    }
+
+    #modal {
+        .control-group:last-child .add-on {
+            height: 55px;
+        }
+
+        input,
+        textarea {
+            width: 492px;
+        }
+    }
+
+
     #fader {
         background: #f5f5f5 url(/bundles/ecentinelacomiconv/images/loader.gif) no-repeat center center;
         position: absolute;
@@ -120,6 +158,7 @@ br {
 
     #table {
         position: relative;
+        top: 28px;
         width: 500px;
 
         .move,

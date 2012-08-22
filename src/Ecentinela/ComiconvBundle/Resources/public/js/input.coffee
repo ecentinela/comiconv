@@ -1,7 +1,16 @@
 # input controller
 Input = can.Control
+    # show contact form
+    '#modal .btn click': ($el, e) ->
+        $modal = $el.closest '#modal'
+        $modal.modal 'hide'
+
+        $form = $modal.find 'form'
+
+        $.post $form.prop('action'), $form.serialize()
+
     # drag the tr
-    '.icon-move draginit': ($drag, e, drag) ->
+    '#table .icon-move draginit': ($drag, e, drag) ->
         # set the node on the dragged element
         $drag.data('node', $drag.closest 'tr')
 
@@ -9,7 +18,7 @@ Input = can.Control
         drag.ghost().html "<span class='label label-info' style='margin-left:15px'></span>"
 
     # dragged element over a droppable
-    'tbody tr dropover': ($drop, e, drop, drag) ->
+    '#table tbody tr dropover': ($drop, e, drop, drag) ->
         # add class to icons
         $drop.find('i').addClass 'icon-white'
 
@@ -34,7 +43,7 @@ Input = can.Control
             $span.html(ExposeTranslation.get 'views.insert_before', '%drag_filename%': dragFilename, '%drop_filename%': dropFilename)
 
     # dragged element out a droppable
-    'tbody tr dropout': ($drop) ->
+    '#table tbody tr dropout': ($drop) ->
         # remove class to icons
         $drop.find('i').removeClass 'icon-white'
 
@@ -42,7 +51,7 @@ Input = can.Control
         $drop.removeClass 'dropover invalid'
 
     # dropped the element
-    'tbody tr dropon': ($drop, e, drop, drag) ->
+    '#table tbody tr dropon': ($drop, e, drop, drag) ->
         # remove class to icons
         $drop.find('i').removeClass 'icon-white'
 
@@ -61,7 +70,7 @@ Input = can.Control
             $drag.insertBefore $drop
 
     # click on the trash icon to remove a file
-    '.icon-trash click': ($el, e) ->
+    '#table .icon-trash click': ($el, e) ->
         # hide the tooltip manually
         $el.tooltip 'hide'
 
@@ -69,11 +78,11 @@ Input = can.Control
         @removeFile $el.closest('tr').data('file')
 
     # click on the retry button
-    '.icon-repeat click': ($el, e) ->
+    '#table .icon-repeat click': ($el, e) ->
         alert(ExposeTranslation.get 'input.reupload_single')
 
     # upload the files
-    '.btn-primary click': ($el) ->
+    '#table .btn-primary click': ($el) ->
         # disable button
         $el.prop 'disabled', 'disabled'
 
@@ -92,7 +101,7 @@ Input = can.Control
         @uploader.start()
 
     # upload the files
-    '.btn-warning click': ($el) ->
+    '#table .btn-warning click': ($el) ->
         alert(ExposeTranslation.get 'input.reupload_multi')
 
     # constructor

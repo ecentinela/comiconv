@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpKernel\Exception\HttpException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
+    Sensio\Bundle\FrameworkExtraBundle\Configuration\Method,
     Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Ecentinela\ComiconvBundle\Entity\Conversion;
@@ -32,32 +33,30 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/{_locale}/contact", name="contact", requirements={ "_locale" = "en|es" })
-     * @Template()
+     * @Route("/contact", name="contact")
+     * @Method("POST")
      */
     public function contactAction(Request $request)
     {
-        if ($request->getMethod() == 'POST') {
-            $message = \Swift_Message::newInstance()
-                                     ->setSubject('Comiconv contact')
-                                     ->setFrom(
-                                        $request->request->get('email')
-                                     )
-                                     ->setTo(
-                                        $this->container->getParameter('contact_email')
-                                     )
-                                     ->setBody(
-                                        $request->request->get('text')
-                                     );
+        $message = \Swift_Message::newInstance()
+                                 ->setSubject('Comiconv - Contact')
+                                 ->setFrom(
+                                    'no-reply@comiconv.com'
+                                 )
+                                 ->setTo(
+                                    $this->container->getParameter('contact_email')
+                                 )
+                                 ->setBody(
+                                    $request->request->get('email').
+                                    "\n\n".
+                                    $request->request->get('text')
+                                 );
 
-            if ($this->get('mailer')->send($message)) {
-                return new Response('sent');
-            } else {
-                throw new HttpException(500, 'Can not send email');
-            }
+        if ($this->get('mailer')->send($message)) {
+            return new Response('sent');
         }
 
-        return array();
+        throw new HttpException(500, 'Can not send email');
     }
 
     /**

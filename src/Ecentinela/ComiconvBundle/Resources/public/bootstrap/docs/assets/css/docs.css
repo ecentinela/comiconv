@@ -26,15 +26,12 @@ h3 code {
 /* Tweak navbar brand link to be super sleek
 -------------------------------------------------- */
 
-body > .navbar-fixed-top {
+body > .navbar {
   font-size: 13px;
-  -webkit-box-shadow: 0 5px 15px rgba(0,0,0,.15);
-     -moz-box-shadow: 0 5px 15px rgba(0,0,0,.15);
-          box-shadow: 0 5px 15px rgba(0,0,0,.15);
 }
 
 /* Change the docs' brand */
-body > .navbar-fixed-top .brand {
+body > .navbar .brand {
   padding-right: 0;
   padding-left: 0;
   margin-left: 20px;
@@ -46,7 +43,7 @@ body > .navbar-fixed-top .brand {
      -moz-transition: all .2s linear;
           transition: all .2s linear;
 }
-body > .navbar-fixed-top .brand:hover {
+body > .navbar .brand:hover {
   text-decoration: none;
   text-shadow: 0 1px 0 rgba(255,255,255,.1), 0 0 30px rgba(255,255,255,.4);
 }
@@ -57,7 +54,7 @@ body > .navbar-fixed-top .brand:hover {
 
 /* padding for in-page bookmarks and fixed navbar */
 section {
-  padding-top: 60px;
+  padding-top: 30px;
 }
 section > .page-header,
 section > .lead {
@@ -104,9 +101,9 @@ hr.soften {
   background: -ms-linear-gradient(45deg,  #020031 0%,#6d3353 100%); /* IE10+ */
   background: linear-gradient(45deg,  #020031 0%,#6d3353 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#020031', endColorstr='#6d3353',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-  -webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,.15), inset 0 -3px 7px rgba(0,0,0,.15);
-     -moz-box-shadow: inset 0 -1px 0 rgba(0,0,0,.15), inset 0 -3px 7px rgba(0,0,0,.15);
-          box-shadow: inset 0 -1px 0 rgba(0,0,0,.15), inset 0 -3px 7px rgba(0,0,0,.15);
+  -webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+     -moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+          box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
 }
 .jumbotron h1 {
   font-size: 80px;
@@ -135,6 +132,16 @@ hr.soften {
 }
 
 /* Download button */
+@-webkit-keyframes downloadButton {
+  from { box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 10px rgba(0,68,204,.5); }
+  50% {  box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 25px rgba(0,68,204,.9); }
+  to {   box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 10px rgba(0,68,204,.5); }
+}
+@-moz-keyframes downloadButton {
+  from { box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 10px rgba(0,68,204,.5); }
+  50% {  box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 25px rgba(0,68,204,.9); }
+  to {   box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 10px rgba(0,68,204,.5); }
+}
 .masthead .btn {
   padding: 14px 24px;
   font-size: 24px;
@@ -144,9 +151,19 @@ hr.soften {
   -webkit-border-radius: 6px;
      -moz-border-radius: 6px;
           border-radius: 6px;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25);
-     -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25);
-          box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 10px rgba(0,68,204,.01);
+     -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 10px rgba(0,68,204,.01);
+          box-shadow: inset 0 1px 0 rgba(255,255,255,.1), 0 1px 5px rgba(0,0,0,.25), 0 2px 10px rgba(0,68,204,.01);
+  -webkit-animation-name: downloadButton;
+     -moz-animation-name: downloadButton;
+  -webkit-animation-duration: 1.5s;
+     -moz-animation-duration: 1.5s;
+  -webkit-animation-iteration-count: infinite;
+     -moz-animation-iteration-count: infinite;
+  -webkit-transition: none;
+     -moz-transition: none;
+          transition: none;
+
 }
 .masthead .btn:active {
   -webkit-box-shadow: inset 0 2px 4px rgba(0,0,0,.1), 0 1px 0 rgba(255,255,255,.1);
@@ -222,6 +239,8 @@ hr.soften {
   display: inline-block;
   padding: 5px 8px;
   line-height: 1;
+  *display: inline;
+  *zoom: 1;
 }
 
 /* Subhead (other pages)
@@ -543,6 +562,7 @@ h2 + .row {
   position: relative;
   margin: 15px 0;
   padding: 39px 19px 14px;
+  *padding-top: 19px;
   background-color: #fff;
   border: 1px solid #ddd;
   -webkit-border-radius: 4px;
@@ -597,6 +617,7 @@ h2 + .row {
   z-index: 1;
   padding: 0;
   height: 90px;
+  overflow: hidden; /* cut the drop shadows off */
 }
 .bs-navbar-top-example .navbar-fixed-top,
 .bs-navbar-bottom-example .navbar-fixed-bottom {
@@ -732,14 +753,94 @@ form.bs-docs-example {
 
 
 
+/* Sidenav for Docs
+-------------------------------------------------- */
+
+/* prevent column from collapsing when affixing */
+.span3 {
+  min-height: 1px;
+}
+
+.bs-docs-sidenav {
+  width: 228px;
+  margin: 30px 0 0;
+  padding: 0;
+  background-color: #fff;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+     -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
+          box-shadow: 0 1px 4px rgba(0,0,0,.065);
+}
+.bs-docs-sidenav > li > a {
+  display: block;
+  *width: 190px;
+  margin: 0 0 -1px;
+  padding: 8px 14px;
+  border: 1px solid #e5e5e5;
+}
+.bs-docs-sidenav > li:first-child > a {
+  -webkit-border-radius: 6px 6px 0 0;
+     -moz-border-radius: 6px 6px 0 0;
+          border-radius: 6px 6px 0 0;
+}
+.bs-docs-sidenav > li:last-child > a {
+  -webkit-border-radius: 0 0 6px 6px;
+     -moz-border-radius: 0 0 6px 6px;
+          border-radius: 0 0 6px 6px;
+}
+.bs-docs-sidenav > .active > a {
+  position: relative;
+  z-index: 2;
+  padding: 9px 15px;
+  border: 0;
+  text-shadow: 0 1px 0 rgba(0,0,0,.15);
+  -webkit-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+     -moz-box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+          box-shadow: inset 1px 0 0 rgba(0,0,0,.1), inset -1px 0 0 rgba(0,0,0,.1);
+}
+/* Chevrons */
+.bs-docs-sidenav .icon-chevron-right {
+  float: right;
+  margin-top: 2px;
+  margin-right: -6px;
+  opacity: .25;
+}
+.bs-docs-sidenav > li > a:hover {
+  background-color: #f5f5f5;
+}
+.bs-docs-sidenav a:hover .icon-chevron-right {
+  opacity: .5;
+}
+.bs-docs-sidenav .active .icon-chevron-right,
+.bs-docs-sidenav .active a:hover .icon-chevron-right {
+  background-image: url(../img/glyphicons-halflings-white.png);
+  opacity: 1;
+}
+.bs-docs-sidenav.affix {
+  top: 40px;
+}
+.bs-docs-sidenav.affix-bottom {
+  position: absolute;
+  top: auto;
+  bottom: 270px;
+}
+
+
+
+
 /* Responsive
 -------------------------------------------------- */
 
 /* Desktop large
 ------------------------- */
-@media (min-width: 1210px) {
+@media (min-width: 1200px) {
   .bs-docs-container {
     max-width: 970px;
+  }
+  .bs-docs-sidenav {
+    width: 258px;
   }
 }
 
@@ -759,6 +860,13 @@ form.bs-docs-example {
     display: inline-block;
     margin: 5px;
   }
+
+  /* When affixed, space properly */
+  .bs-docs-sidenav {
+    top: 0;
+    margin-top: 30px;
+    margin-right: 0;
+  }
 }
 
 /* Tablet to desktop
@@ -770,7 +878,15 @@ form.bs-docs-example {
   }
   /* Widen masthead and social buttons to fill body padding */
   .jumbotron {
-    margin-top:   -20px; /* Offset bottom margin on .navbar */
+    margin-top: -20px; /* Offset bottom margin on .navbar */
+  }
+  /* Adjust sidenav width */
+  .bs-docs-sidenav {
+    width: 166px;
+    margin-top: 20px;
+  }
+  .bs-docs-sidenav.affix {
+    top: 0;
   }
 }
 
@@ -808,7 +924,24 @@ form.bs-docs-example {
     margin-bottom: 5px;
   }
 
+  /* Sidenav */
+  .bs-docs-sidenav {
+    width: auto;
+    margin-bottom: 20px;
+  }
+  .bs-docs-sidenav.affix {
+    position: static;
+    width: auto;
+    top: 0;
+  }
+
   /* Unfloat the back to top link in footer */
+  .footer {
+    margin-left: -20px;
+    margin-right: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
   .footer p {
     margin-bottom: 9px;
   }
@@ -885,129 +1018,5 @@ form.bs-docs-example {
   /* Unfloat the back to top in footer to prevent odd text wrapping */
   .footer .pull-right {
     float: none;
-  }
-}
-
-
-
-/* Docs side .nav-list
-------------------------- */
-.span3 {
-  min-height: 1px;
-}
-.bs-docs-sidenav {
-  width: 218px;
-  margin-top: 30px;
-  padding: 0;
-  margin-right: 10px;
-  background-color: #fff;
-  margin-left: 0;
-  -webkit-border-radius: 6px;
-     -moz-border-radius: 6px;
-          border-radius: 6px;
-  -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.065);
-     -moz-box-shadow: 0 1px 4px rgba(0,0,0,.065);
-          box-shadow: 0 1px 4px rgba(0,0,0,.065);
-}
-.bs-docs-sidenav > li > a {
-  margin: 0 0 -1px;
-  font-size: 14px;
-  padding: 9px 14px;
-  border: 1px solid #e5e5e5;
-}
-.bs-docs-sidenav > li:first-child > a {
-  -webkit-border-radius: 6px 6px 0 0;
-     -moz-border-radius: 6px 6px 0 0;
-          border-radius: 6px 6px 0 0;
-}
-.bs-docs-sidenav > li:last-child > a {
-  -webkit-border-radius: 0 0 6px 6px;
-     -moz-border-radius: 0 0 6px 6px;
-          border-radius: 0 0 6px 6px;
-}
-.bs-docs-sidenav > .active > a {
-  border-color: #08c;
-  position: relative;
-  z-index: 2;
-}
-/* Chevrons */
-.bs-docs-sidenav .icon-chevron-right {
-  float: right;
-  margin-top: 2px;
-  margin-right: -6px;
-  opacity: .25;
-}
-.bs-docs-sidenav > li > a:hover {
-  background-color: #f5f5f5;
-}
-.bs-docs-sidenav a:hover .icon-chevron-right {
-  opacity: .5;
-}
-.bs-docs-sidenav .active .icon-chevron-right {
-  background-image: url(../img/glyphicons-halflings-white.png);
-  opacity: .75;
-}
-.bs-docs-sidenav.affix {
-  top: 40px;
-}
-
-@media (min-width: 1200px) {
-  .bs-docs-sidenav {
-    width: 258px;
-  }
-}
-
-@media (max-width: 979px) {
-  .bs-docs-sidenav {
-    top: 0px;
-    margin-top: 30px;
-    margin-right: 0;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 979px) {
-  .bs-docs-sidenav {
-    width: 166px;
-  }
-}
-
-@media (max-width: 767px) {
-  .bs-docs-sidenav {
-    width: auto;
-  }
-  .bs-docs-sidenav.affix {
-    position: relative;
-    width: auto;
-  }
-}
-
-@media (min-width: 979px) {
-  .masthead,
-  .subhead {
-    position: fixed;
-    top: 40px;
-    right: 0;
-    left: 0;
-  }
-  .masthead {
-    height: 380px;
-  }
-  .subhead {
-    height: 130px; /* +80px pdding */
-  }
-  .bs-docs-canvas {
-    position: absolute;
-    width: 100%;
-    z-index: 10;
-    background-color: #fff;
-    -webkit-box-shadow: 0 -5px 15px rgba(0,0,0,.15);
-       -moz-box-shadow: 0 -5px 15px rgba(0,0,0,.15);
-            box-shadow: 0 -5px 15px rgba(0,0,0,.15);
-  }
-  .masthead + .bs-docs-canvas {
-    top: 570px;
-  }
-  .subhead + .bs-docs-canvas {
-    top: 250px;
   }
 }

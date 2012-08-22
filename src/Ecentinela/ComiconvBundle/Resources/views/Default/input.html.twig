@@ -16,6 +16,8 @@
     "@EcentinelaComiconvBundle/Resources/public/canjs/can.jquery.js"
     "@EcentinelaComiconvBundle/Resources/public/jquerypp/jquerypp.js"
     "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/bootstrap-tooltip.js"
+    "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/bootstrap-popover.js"
+    "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/bootstrap-modal.js"
     "@EcentinelaComiconvBundle/Resources/public/bootstrap/js/bootstrap-transition.js"
     "@EcentinelaComiconvBundle/Resources/public/plupload/js/plupload.full.js"
     "@EcentinelaComiconvBundle/Resources/public/js/input.coffee"
@@ -45,11 +47,64 @@
     <p>{{ "input.description" | trans | raw }}</p>
 
     <div id="drop-area" class="row">
-
         <div id="drop" class="span4">
             <img src="{{ asset("bundles/ecentinelacomiconv/images/drop.png") }}" alt="drop" />
 
             <a href="#" id="upload-link">{{ "input.drag_or_click_to_add" | trans }}</a>
+        </div>
+
+        <div id="contact">
+            <img src="{{ asset("bundles/ecentinelacomiconv/images/gravatar.jpg") }}" class="img-circle" />
+
+            <div class="popover right">
+                <div class="arrow"></div>
+
+                <h3 class="popover-title">{{ "input.thanks" | trans }}</h3>
+
+                <div class="popover-content">
+                    <p>{{ "input.receive_comments" | trans }}</p>
+
+                    <br />
+
+                    <a href="#modal" class="btn btn-primary btn-large btn-block" data-toggle="modal">{{ "input.feedback" | trans }}</a>
+                </div>
+            </div>
+
+            <div class="modal hide fade" id="modal">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h3>{{ "input.contact_message" | trans }}</h3>
+                </div>
+
+                <div class="modal-body">
+                    <form action="{{ path("contact") }}" method="post" class="form-horizontal">
+                        <div class="control-group">
+                            <div class="input-prepend">
+                                <div class="add-on">
+                                    <i class="icon-envelope"></i>
+                                </div>
+
+                                <input type="email" name="email" placeholder="{{ "input.email" | trans }}" />
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <div class="input-prepend">
+                                <div class="add-on">
+                                    <i class="icon-comment"></i>
+                                </div>
+
+                                <textarea name="text" placeholder="{{ "input.text" | trans }}"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <a href="#" class="btn" data-dismiss="modal">{{ "input.close" | trans }}</a>
+                    <a href="#" class="btn btn-primary">{{ "input.send" | trans }}</a>
+                </div>
+            </div>
         </div>
 
         <div id="table" class="span5 offset1 fade">
@@ -92,7 +147,6 @@
                 </tfoot>
             </table>
         </div>
-
     </div>
 
     <hr />
