@@ -142,7 +142,9 @@ class ConversionCommand extends ContainerAwareCommand
                                                       ))
                                          );
 
-                $container->get('mailer')->send($message);
+                if ($container->get('mailer')->send($message)) {
+                    $output->writeLn("  sent email to <info>$email</info>");
+                }
             }
         } catch (\Exception $e) {
             // info message
