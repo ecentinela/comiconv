@@ -28,7 +28,10 @@ class ConversionQueueCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // get number of conversions to consume
-        $number = $input->getArgument('number') ?: 1;
+        $number = intval($input->getArgument('number') ?: 1);
+
+        // output
+        $output->writeLn("Prepared to consume <info>$number</info> conversions");
 
         // create a query builder to get pending conversions
         $qb = $this->getContainer()
