@@ -54,6 +54,11 @@ class ConversionCommand extends ContainerAwareCommand
      */
     private function process(OutputInterface $output, Conversion $conversion)
     {
+        // get entity manager
+        $em = $this->getContainer()
+                   ->get('doctrine')
+                   ->getManager();
+
         // get container
         $container = $this->getContainer();
 
@@ -112,6 +117,9 @@ class ConversionCommand extends ContainerAwareCommand
                     break;
             }
 
+            // refresh conversion (user maybe has inserted it's email while conversion is being done)
+            $em->refresh($conversion);
+
             // update conversion
             $conversion->setStatus('converted');
 
@@ -160,10 +168,7 @@ class ConversionCommand extends ContainerAwareCommand
         $fs->remove($dstPath);
 
         // save conversion changes
-        $this->getContainer()
-             ->get('doctrine')
-             ->getManager()
-             ->flush();
+        $em->flush();
     }
 
     /**
