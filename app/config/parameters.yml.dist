@@ -16,6 +16,8 @@ parameters:
 
     contact_email:
 
+    base_url:
+
     node:
     node_paths:
     coffee:

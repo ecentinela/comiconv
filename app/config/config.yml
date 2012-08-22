@@ -77,3 +77,7 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ @annotation_reader ] ]
+
+# FRosas
+frosas_base_url:
+    base_url: %base_url%

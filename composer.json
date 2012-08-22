@@ -20,7 +20,8 @@
         "jms/di-extra-bundle": "1.1.*",
         "friendsofsymfony/jsrouting-bundle": "*",
         "willdurand/expose-translation-bundle": "*",
-        "gedmo/doctrine-extensions": "dev-master"
+        "gedmo/doctrine-extensions": "dev-master",
+        "frosas/base-url-bundle": "*"
     },
     "scripts": {
         "post-install-cmd": [

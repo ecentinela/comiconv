@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
             new Bazinga\ExposeTranslationBundle\BazingaExposeTranslationBundle(),
+            new Frosas\BaseUrlBundle\FrosasBaseUrlBundle(),
             new Ecentinela\ComiconvBundle\EcentinelaComiconvBundle(),
         );
 
