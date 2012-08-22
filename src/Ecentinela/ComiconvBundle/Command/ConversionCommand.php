@@ -127,7 +127,7 @@ class ConversionCommand extends ContainerAwareCommand
             if ($email = $conversion->getEmail()) {
                 $message = \Swift_Message::newInstance()
                                          ->setSubject(
-                                            $this->getContainer()->get('translator')->trans('email.subject')
+                                            $container->get('translator')->trans('email.subject')
                                          )
                                          ->setFrom('no-reply@comiconv.com')
                                          ->setTo($email)
