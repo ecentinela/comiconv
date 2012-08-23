@@ -1,7 +1,7 @@
 # input controller
 Input = can.Control
     # show contact form
-    '#modal .btn click': ($el, e) ->
+    '#modal .btn-primary click': ($el, e) ->
         $modal = $el.closest '#modal'
         $modal.modal 'hide'
 
