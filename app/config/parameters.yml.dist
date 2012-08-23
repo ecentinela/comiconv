@@ -16,6 +16,8 @@ parameters:
 
     contact_email:
 
+    google_analytics:
+
     base_url:
 
     node:
