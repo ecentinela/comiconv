@@ -48,7 +48,7 @@ class ConversionQueueCommand extends ContainerAwareCommand
 
         $consumed = 0;
 
-        while ($consumed < $number) {
+        while ($consumed < $number || $number == -1) {
             $conversion = $qb->getQuery()
                              ->getOneOrNullResult();
 
