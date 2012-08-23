@@ -131,8 +131,11 @@ br {
     }
 
     #modal {
-        .control-group:last-child .add-on {
-            height: 55px;
+        .control-group:last-child {
+            .add-on,
+            textarea {
+                height: 55px;
+            }
         }
 
         input,
