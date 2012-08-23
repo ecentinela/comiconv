@@ -19,7 +19,7 @@ class ConversionQueueCommand extends ContainerAwareCommand
     {
         $this->setName('ecentinela:comiconv:queue')
              ->setDescription('Start process to consume conversions')
-             ->addArgument('number', InputArgument::OPTIONAL, 'Number of conversions to consume');
+             ->addArgument('number', InputArgument::OPTIONAL, 'Number of conversions to consume (0 = infinite');
     }
 
     /**
@@ -28,7 +28,8 @@ class ConversionQueueCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // get number of conversions to consume
-        $number = intval($input->getArgument('number') ?: 1);
+        $number = $input->getArgument('number');
+        $number = $number ? intval($number) : -1;
 
         // output
         $output->writeLn("Prepared to consume <info>$number</info> conversions");
