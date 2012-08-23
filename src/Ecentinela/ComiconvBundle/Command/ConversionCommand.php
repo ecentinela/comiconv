@@ -76,7 +76,7 @@ class ConversionCommand extends ContainerAwareCommand
         $files = Finder::create()
                        ->files()
                        ->in($srcPath)
-                       ->name('/\.(pdf|jpg|zip)/')
+                       ->name('/\.(pdf|jpg|jpeg|zip)/')
                        ->sortByName()
                        ->getIterator();
 
