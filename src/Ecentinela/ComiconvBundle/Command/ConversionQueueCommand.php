@@ -29,7 +29,7 @@ class ConversionQueueCommand extends ContainerAwareCommand
     {
         // get number of conversions to consume
         $number = $input->getArgument('number');
-        $number = $number ? intval($number) : -1;
+        $number = $number ? intval($number) : 'infinite';
 
         // output
         $output->writeLn("Prepared to consume <info>$number</info> conversions");
@@ -49,7 +49,7 @@ class ConversionQueueCommand extends ContainerAwareCommand
 
         $consumed = 0;
 
-        while ($consumed < $number || $number == -1) {
+        while ($consumed < $number || $number == 'infinite') {
             $conversion = $qb->getQuery()
                              ->getOneOrNullResult();
 
